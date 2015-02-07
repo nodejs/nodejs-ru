@@ -1,6 +1,7 @@
 ## iojs-ru
 >Localization and translation of [io.js](https://iojs.org/) to Russian :ru:
-![io-logo](https://iojs.org/images/1.0.0.png =80x)
+
+<img src="https://iojs.org/images/1.0.0.png" width="80" >
 
 ## Team
 <table>
@@ -8,8 +9,8 @@
 <tr><th align="left">Name</th><th>GitHub</th><th>Twitter</th></tr>
 </thead>
 <tbody>
-<tr><td align="left">Ruslan Ismagilov</td><td><a href="https://github.com/isRuslan">@isRuslan</a></td><td><a href="http://twitter.com/is_ruslan">@is_ruslan</a></td></tr>
 <tr><td align="left">Konstantin Gorodinskiy</td><td><a href="https://github.com/gorodinskiy">@gorodinskiy</a></td><td><a href="http://twitter.com/konstantin">@konstantin</a></td></tr>
+<tr><td align="left">Ruslan Ismagilov</td><td><a href="https://github.com/isRuslan">@isRuslan</a></td><td><a href="http://twitter.com/is_ruslan">@is_ruslan</a></td></tr>
 </tbody>
 </table>
 
