@@ -1,5 +1,6 @@
 # iojs-ru
 Перевод [io.js](https://iojs.org/) на русский язык.
+twitter — [@iojs_ru](https://twitter.com/iojs_ru)
 
 ## Авторы
 - Konstantin Gorodinskiy ([@gorodinskiy](https://github.com/gorodinskiy))
