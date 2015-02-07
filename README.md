@@ -3,6 +3,7 @@
 
 ## Авторы
 - Konstantin Gorodinskiy ([@gorodinskiy](https://github.com/gorodinskiy))
+- Ruslan Ismagilov ([@isRuslan](https://github.com/isRuslan))
 
 ## The MIT License (MIT)
 
