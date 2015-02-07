@@ -9,7 +9,7 @@
 </thead>
 <tbody>
 <tr><td align="left">Ruslan Ismagilov</td><td><a href="https://github.com/isRuslan">@isRuslan</a></td><td><a href="http://twitter.com/is_ruslan">@is_ruslan</a></td></tr>
-<tr><td align="left">Konstantin Gorodinskiy</td><td><a href="https://github.com/gorodinskiy">@gorodinskiy</a></td><td></td></tr>
+<tr><td align="left">Konstantin Gorodinskiy</td><td><a href="https://github.com/gorodinskiy">@gorodinskiy</a></td><td><a href="http://twitter.com/konstantin">@konstantin</a></td></tr>
 </tbody>
 </table>
 
