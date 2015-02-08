@@ -1,7 +1,11 @@
 # iojs-ru
-Перевод [io.js](https://iojs.org/) на русский язык. Обсуждение всех задач — [тут](https://github.com/iojs/iojs-ru/issues).
+> Перевод [io.js](https://iojs.org/) на русский язык. :ru:
 
-twitter — [@iojs_ru](https://twitter.com/iojs_ru)
+[![Gitter](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/iojs/iojs-ru?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)
+
+Обсуждение всех задач — [тут](https://github.com/iojs/iojs-ru/issues).
+
+Следи за новостями в twitter — [@iojs_ru](https://twitter.com/iojs_ru)
 
 ## Авторы
 
