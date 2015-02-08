@@ -6,7 +6,7 @@ Atom и nw.js перешли на io.js, Linux Tracing, а также много
 
 Оглядываясь на Январь, мы обнаружили, что это был **третий наиболее активный месяц в истории Node.js (294 коммита)** и самый активный месяц на протяжении почти **трёх лет (308 коммитов в Феврале 2012).** При таком росте поддержки мы ожидаем, что Февраль будет еще более плодотворным.
 
-1. Была выпущена версия **[1.1.0](https://iojs.org/dist/v1.1.0/)**. **Изменения** вы можете просмотреть [тут](https://github.com/iojs/io.js/blob/v1.x/CHANGELOG.md#2015-02-03-version-110-chrisdickinson)
+1. Была выпущена версия **[1.1.0](https://iojs.org/dist/v1.1.0/)**. **Изменения** вы можете просмотреть [тут](https://github.com/iojs/io.js/blob/v1.x/CHANGELOG.md#2015-02-03-version-110-chrisdickinson).
 2. Sam Newman добавил **[упрощенное создание Stream-объектов](https://github.com/iojs/io.js/commit/50daee7243a3f987e1a28d93c43f913471d6885a)**.
 3. [добавлено](https://github.com/iojs/io.js/pull/702) **Linux Tracing** (LTTNG).
 4. в рамках более тесного сотрудничества по вопросам отладки в io.js Google [поделился своими наработками](https://github.com/iojs/io.js/issues/671#issuecomment-73191538) **для v8 и Chrome**.
