@@ -5,7 +5,10 @@
 
 Обсуждение всех задач — [тут](https://github.com/iojs/iojs-ru/issues).
 
-Следи за новостями в twitter — [@iojs_ru](https://twitter.com/iojs_ru)
+Следи за новостями в twitter — <a href="https://twitter.com/intent/follow?screen_name=iojs_ru" target="_blank">
+  @iojs_ru
+</a>
+
 
 ## Авторы
 
