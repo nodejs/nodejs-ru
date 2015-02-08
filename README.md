@@ -12,6 +12,7 @@ twitter — [@iojs_ru](https://twitter.com/iojs_ru)
 - Yuri Solovyov ([@YuriSolovyov](https://github.com/YuriSolovyov))
 - Benjamin Tambourine ([@vtambourine](https://github.com/vtambourine))
 - Boris Egorov ([@dolphin278](https://github.com/dolphin278))
+- Oleg Elifantiev ([@Olegas](https://github.com/Olegas))
 
 ## The MIT License (MIT)
 
