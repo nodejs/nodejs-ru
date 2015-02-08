@@ -4,6 +4,9 @@
 twitter — [@iojs_ru](https://twitter.com/iojs_ru)
 
 ## Авторы
+
+Мы ищем переводчиков. Чтобы попасть в команду заведите «тикет» [здесь](https://github.com/iojs/iojs-ru/issues).
+
 - Konstantin Gorodinskiy ([@gorodinskiy](https://github.com/gorodinskiy))
 - Ruslan Ismagilov ([@isRuslan](https://github.com/isRuslan))
 
