@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <title>io.js - ES6 on io.js</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta name="description" content="iojs">
+    <meta name="keywords" content="iojs, io.js, io js, javascript io, uv, libuv, node-forward, node forward, node, node.js, node.js forward, nodejs, nodejs forward, javascript">
+    <link href="https://fonts.googleapis.com/css?family=Lato:400,700" rel="stylesheet">
+    <link href="style.css" rel="stylesheet">
+</head>
+
+<body>
+
+<header>
+    <div class="content">
+        <a href="/" class="logo">io.js</a>
+        <div class="spacer"></div>
+        <a href="faq.html">FAQ</a>
+        <a href="es6.html">ES6</a>
+        <a href="https://iojs.org/api/">API Docs</a>
+    </div>
+</header>
+
+<div class="content">
+
+    <h1>ES6 в io.js</h1>
+
+    <div class="description">
+        <p>
+            В основе io.js стоит современная версия <a href="https://code.google.com/p/v8/">V8</a>. Придерживаясь самых последних версий этого движка,
+            мы гарантируем, что новые возможности <a href="http://www.ecma-international.org/publications/standards/Ecma-262.htm">спецификации JavaScript ECMA-262</a>
+            станут доступны разработчикам io.js своевременно, а также улучшения, связанные с производительностью и стабильностью.
+        </p>
+        <p>
+            Версия io.js 1.1.0 основана на версии V8 4.1.0.14, которая включает в себя гораздо больше возможностей ES6 в отличии от версии 3.28.73,
+            на которой основан joyent/node@0.12.x
+        </p>
+    </div>
+
+    <div class="faq-item">
+
+        <h2 class="faq-title">Теперь без флага --harmony</h2>
+        <div class="faq-body">
+            <p>
+                В joyent/node@0.12.x (V8 3.28) флаг <code>--harmony</code> включает все <strong>completed</strong>, <strong>staged</strong> and <strong>in progress</strong>
+                возможности ES6 одновременно (исключая нестандартную семмантику для <code>typeof</code>, которая скрыта за флагом <code>--harmony-typeof</code>).
+                Это озночает, что некоторые, содержащие множество ошибок или даже сломанные возможности,
+                такие как <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Proxy">прокси</a>,
+                одинаково доступны для разработчиков как и, например, <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/function*">генераторы</a>,
+                которые имеют очень мало или вообще не имеют известных проблем. Поэтому, хорошей практикой было бы либо включать только конкретные возможности,
+                используя конкретные флаги harmony (например <code>--harmony-generators</code>), или включить все, но использовать ограниченное подможество.
+            </p>
+            <p>
+                В io.js@1.x (V8 4.1+) исключена вся сложность. Все возможности спецификации логически разделены в три группы:
+                <strong>shipping</strong>, <strong>staged</strong> and <strong>в процессе</strong> features:
+            </p>
+
+            <ul class="task-list">
+                <li>
+                    Все <strong>shipping</strong> возможности - те, которые в V8 расматриваются как стабильные,
+                    такие как <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/function*">генераторы</a>,
+                    <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/template_strings">шаблонные строки</a>,
+                    <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/New_in_JavaScript/ECMAScript_6_support_in_Mozilla#Additions_to_the_String_object">новые методы строк</a>
+                    и многие другие включены <strong>по умолчанию в io.js</strong> и <strong>НЕ</strong> требуют каких-либо флагов.
+                </li>
+                <li>
+                    Также существуют <strong>staged</strong> возможностие, которые почти реализованы, но не были полностью протестированы или обновлены в соответствии с последней
+                    версией спецификации, и, следовательно, не рассматриваяются как стабильные рзработчиками V8 (т.е. возможны какие-либо проблемные ситуации, которые еще не раскрыты).
+                    Вероятно это эквивалент состояния <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/function*">генераторов</a> в версии V8 3.26.
+                    Это тип возможностей -  "используй на свой риск" и на данный момент требуют флаг: <code>--es_staging</code> (или его синонима, <code>--harmony</code>).
+                </li>
+                <li>
+                    Наконец, все возможности <strong>in progress</strong> могут быть активированы инидвидуально через соответственные флаги harmony
+                    (например <code>--harmony_arrow_functions</code>), хотя это настоятельно не рекомендуется, если только не для испытательных целей.
+                </li>
+            </ul>
+        </div>
+
+        <h2 class="faq-title">
+            Какие возможности ES6 входят в io.js по умолчанию (не требуя флагов)?
+        </h2>
+        <div class="faq-body">
+            <ul class="task-list">
+                <li>Блочная область видимости</li>
+                <ul class="task-list">
+                    <li><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/let">let</a></li>
+                    <li><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/const">const</a></li>
+                    <li><code>function</code> в блоке</li>
+                </ul>
+
+                <div class="note">
+                    В v8 3.31.74.1, блочная область видимости <a href="https://groups.google.com/forum/#!topic/v8-users/3UXNCkAU8Es">
+                    намеренно реализованы c ограниченим использования в строгом режиме</a>.
+                    Разработчики должны осозовать, что данная ситуация изменится, т.к v8 продолжает продвигаться в сторону соответствия со спецификацией ES6.
+                </div>
+
+                <li>Коллекции</li>
+                <ul class="task-list">
+                    <li><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Map">Map</a></li>
+                    <li><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/WeakMap">WeakMap</a></li>
+                    <li><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Set">Set</a></li>
+                    <li><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/WeakSet">WeakSet</a></li>
+                </ul>
+                <li><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/function*">Генераторы</a></li>
+                <li><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Lexical_grammar#Numeric_literals">Литералы двоичных и восьмеричных чисел</a></li>
+                <li><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Обещания (Promise)</a></li>
+                <li><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/New_in_JavaScript/ECMAScript_6_support_in_Mozilla#Additions_to_the_String_object">Новые методы строк</a></li>
+                <li><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Symbol">Символы (Symbol)</a></li>
+                <li><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/template_strings">Шаблонные строки</a></li>
+            </ul>
+
+            <p>Вы можете ознакомиться с более подробным списком возможностей, включая сравнение с другими движками, на странице проекта <a href="https://kangax.github.io/compat-table/es6/">compat-table</a>.</p>
+        </div>
+    </div>
+
+    <div class="faq-item">
+        <h2 class="faq-title">
+            Какие ES6 возможности скрыты за флагом --es_staging?
+        </h2>
+        <div class="faq-body">
+            <ul class="task-list">
+                <li><a href="https://github.com/lukehoban/es6features#classes">Классы</a> (только в строгом режиме)</li>
+                <li><a href="https://github.com/lukehoban/es6features#enhanced-object-literals">Расширенные возможности литералов объекта</a></li>
+                <li><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Symbol"><code>Symbol.toStringTag</code></a> (определяемый пользователем результат метода <code>Object.prototype.toString</code>)</li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="faq-item">
+
+        <h2 class="faq-title">
+            Моя инфраструктура работает с использованием флага --harmony. Следует ли мне удалить его?
+        </h2>
+        <div class="faq-body">
+            <p>
+                Текущее поведение флага <code>--harmony</code> в io.js заключается во включени только <strong>staged</strong> возможностей.
+                В конце концов на данный момент это синоним флага <code>--es_staging</code>. Как уже упоминалось выше, существуют возможности,
+                которые все еще не рассматриваются как стабильные. Если для вас важна надежность, особенно в случае продакшена, луше убрать этот
+                флаг до тех пор пока его возможности не будут реализованы по умолчаню в V8 и, следовательнов, в io.js.
+                Если вы оставите этот флаг, you should be prepared for further io.js upgrades to break your code if V8 changes their semantics to more closely follow the standard.</p>
+                Если вы оставите этот флаг, вам следует быть готовым к тому, что следующие обновления io.js могу сломать ваш код если если V8 изменит семантику некотрых
+                возможностей, чтобы лучше соответствовать стандарту
+            .</p>
+        </div>
+    </div>
+
+    <div class="faq-item">
+
+        <h2 class="faq-title">
+            Как определить какая версия V8 поставляется с конкретной версией ioj.js?
+        </h2>
+        <div class="faq-body">
+            <p>
+                io.js предоставляет простой способ получения списка всех входящих в конретную сборку зависимостей и их версий через глобальный объект
+                <code>process</code>. В случае V8, чтобы получить его версию, введите следующую комманду в терминал:
+            </p>
+            <div class="highlight highlight-sh"><pre>iojs -p process.versions.v8</span></pre></div>
+        </div>
+    </div>
+</div>
+
+<footer class="content">
+    <nav>
+        <a href="https://github.com/iojs/io.js/issues">GitHub Issues</a><!--
+   --><a href="https://github.com/iojs">GitHub Org</a><!--
+   --><a href="https://webchat.freenode.net/?channels=io.js">IRC Chat</a><!--
+   --><a href="http://logs.libuv.org/io.js/latest">Logs</a><!--
+   --><a href="https://github.com/iojs/io.js/blob/v1.x/GOVERNANCE.md#readme">Governance</a>
+    </nav>
+</footer>
+
+</body>
+
+</html>
