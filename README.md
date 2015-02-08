@@ -9,7 +9,7 @@ twitter — [@iojs_ru](https://twitter.com/iojs_ru)
 
 - Konstantin Gorodinskiy ([@gorodinskiy](https://github.com/gorodinskiy))
 - Ruslan Ismagilov ([@isRuslan](https://github.com/isRuslan))
-- Yuri Solovyov ([YuriSolovyov](https://github.com/YuriSolovyov))
+- Yuri Solovyov ([@YuriSolovyov](https://github.com/YuriSolovyov))
 
 ## The MIT License (MIT)
 
