@@ -1,5 +1,5 @@
 # iojs-ru
-Перевод [io.js](https://iojs.org/) на русский язык.
+Перевод [io.js](https://iojs.org/) на русский язык. Обсуждение всех задач — [тут](https://github.com/iojs/iojs-ru/issues).
 
 twitter — [@iojs_ru](https://twitter.com/iojs_ru)
 
