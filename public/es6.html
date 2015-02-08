@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ru">
 
 <head>
     <meta charset="utf-8">
@@ -15,6 +15,7 @@
             white-space: nowrap; 
         }
     </style>
+    <base href="http://iojs.github.io/iojs-ru/" />
 </head>
 
 <body>
@@ -50,22 +51,22 @@
         <h2 class="faq-title">Теперь без флага --harmony</h2>
         <div class="faq-body">
             <p>
-                В joyent/node@0.12.x (V8 3.28) флаг <code>--harmony</code> включает все <strong>completed</strong>, <strong>staged</strong> and <strong>in progress</strong>
-                возможности ES6 одновременно (исключая нестандартную семмантику для <code>typeof</code>, которая скрыта за флагом <code>--harmony-typeof</code>).
-                Это озночает, что некоторые содержащие множество ошибок возможности,
+                В joyent/node@0.12.x (V8 3.28) флаг <code>--harmony</code> включает все <strong>completed</strong>, <strong>staged</strong> и <strong>in progress</strong>
+                возможности ES6 одновременно (исключая нестандартную семантику для <code>typeof</code>, которая скрыта за флагом <code>--harmony-typeof</code>).
+                Это означает, что некоторые содержащие множество ошибок возможности,
                 такие как <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Proxy">прокси</a>,
                 одинаково доступны для разработчиков как и, например, <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/function*">генераторы</a>,
                 которые имеют очень мало или вообще не имеют известных проблем. Поэтому, хорошей практикой было бы либо включать только конкретные возможности,
                 используя конкретные флаги harmony (например <code>--harmony-generators</code>), или включить все, но использовать ограниченное их подможество.
             </p>
             <p>
-                В io.js@1.x (V8 4.1+) исключена вся сложность. Все возможности спецификации логически разделены в три группы:
-                <strong>shipping</strong>, <strong>staged</strong> and <strong>in porcess</strong>:
+                В io.js@1.x (V8 4.1+) исключена вся сложность. Все возможности спецификации логически разделены на три группы:
+                <strong>shipping</strong>, <strong>staged</strong> и <strong>in progress</strong>:
             </p>
 
             <ul class="task-list">
                 <li>
-                    Все <strong>shipping</strong> возможности - те, которые в V8 расматриваются как стабильные,
+                    Все <strong>shipping</strong> возможности &mdash; те, которые в V8 расcматриваются как стабильные,
                     такие как <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/function*">генераторы</a>,
                     <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/template_strings">шаблонные строки</a>,
                     <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/New_in_JavaScript/ECMAScript_6_support_in_Mozilla#Additions_to_the_String_object">новые методы строк</a>
@@ -73,13 +74,13 @@
                 </li>
                 <li>
                     Также существуют <strong>staged</strong> возможности, которые почти реализованы, но не были полностью протестированы или обновлены в соответствии с последней
-                    версией спецификации, и, следовательно, не рассматриваяются как стабильные разработчиками V8 (т.е. возможны какие-либо проблемы, связанные с ними, которые еще не раскрыты).
+                    версией спецификации, и, следовательно, не рассматриваются как стабильные разработчиками V8 (т.е. возможны какие-либо проблемы, связанные с ними, которые еще не раскрыты).
                     Вероятно это эквивалент состояния <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/function*">генераторов</a> в версии V8 3.26.
-                    Это тип возможностей -  "используй на свой риск" и на данный момент требуют наличие флага <code>--es_staging</code> (или его синонима, <code>--harmony</code>).
+                    Это тип возможностей &laquo;используй на свой страх и риск&raquo; и на данный момент они требуют наличие флага <code>--es_staging</code> (или его синонима, <code>--harmony</code>).
                 </li>
                 <li>
                     Наконец, все возможности <strong>in progress</strong> могут быть активированы инидвидуально через соответственные флаги harmony
-                    (например <code>--harmony_arrow_functions</code>), хотя делать это настоятельно не рекомендуется, если только не для испытательных целей.
+                    (например <code>--harmony_arrow_functions</code>), хотя делать это настоятельно не рекомендуется, если только вы не хотите специально их протестировать.
                 </li>
             </ul>
         </div>
@@ -98,8 +99,8 @@
 
                 <div class="note">
                     В v8 3.31.74.1, блочная область видимости <a href="https://groups.google.com/forum/#!topic/v8-users/3UXNCkAU8Es">
-                    намеренно реализованы c ограниченим использования в строгом режиме</a>.
-                    Разработчики должны осозовать, что данная ситуация изменится, т.к v8 продолжает продвигаться в сторону соответствия спецификации ES6.
+                    намеренно реализована c ограничением использования в строгом режиме</a>.
+                    Разработчики должны осознавать, что данная ситуация изменится, т.к. v8 продолжает продвигаться в сторону соответствия спецификации ES6.
                 </div>
 
                 <li>Коллекции</li>
@@ -123,7 +124,7 @@
 
     <div class="faq-item">
         <h2 class="faq-title">
-            Какие ES6 возможности скрыты за флагом <code>--es_staging</code>?
+            Какие возможности ES6 скрыты за флагом <code>--es_staging</code>?
         </h2>
         <div class="faq-body">
             <ul class="task-list">
@@ -141,10 +142,10 @@
         </h2>
         <div class="faq-body">
             <p>
-                Текущее поведение флага <code>--harmony</code> в io.js заключается во включени только <strong>staged</strong> возможностей.
-                В конце концов на данный момент это синоним флага <code>--es_staging</code>. Как уже упоминалось выше, существуют возможности,
+                Текущее поведение флага <code>--harmony</code> в io.js заключается во включении только <strong>staged</strong> возможностей.
+                В конце концов, на данный момент это синоним флага <code>--es_staging</code>. Как уже упоминалось выше, существуют возможности,
                 которые все еще не рассматриваются как стабильные. Если для вас важна надежность, особенно в случае продакшена, лучше убрать этот
-                флаг до тех пор пока эти возможности не будут реализованы по умолчаню в V8 и, следовательнов, в io.js.
+                флаг до тех пор, пока эти возможности не будут реализованы по умолчаню в V8 и, следовательнов, в io.js.
                 Если вы оставите этот флаг, вам следует быть готовым к тому, что следующие обновления io.js могут сломать ваш код, 
                 в случае если V8 изменит семантику некотрых возможностей, для лучшего соответствия стандарту.
             </p>
@@ -161,7 +162,7 @@
                 io.js предоставляет простой способ получения списка всех входящих в конретную сборку зависимостей и их версий через глобальный объект
                 <code>process</code>. В случае V8, чтобы получить его версию, введите следующую комманду в терминал:
             </p>
-            <div class="highlight highlight-sh"><pre>iojs -p process.versions.v8</span></pre></div>
+            <div class="highlight highlight-sh"><pre>iojs -p process.versions.v8</pre></div>
         </div>
     </div>
 </div>
