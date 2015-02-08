@@ -16,6 +16,7 @@ twitter — [@iojs_ru](https://twitter.com/iojs_ru)
 <tr><td align="left">Yuri Solovyov</td><td><a href="https://github.com/YuriSolovyov">@YuriSolovyov</a></td><td></td></tr>
 <tr><td align="left">Benjamin Tambourine</td><td><a href="https://github.com/vtambourine">@vtambourine</a></td><td></td></tr>
 <tr><td align="left">Boris Egorov</td><td><a href="https://github.com/dolphin278">@dolphin278</a></td><td><a href="http://twitter.com/dolphin278">@dolphin278</a></td></tr>
+<tr><td align="left">Oleg Elifantiev</td><td><a href="https://github.com/Olegas">@Olegas</a></td><td></td></tr>
 </tbody>
 </table>
 
