@@ -3,6 +3,8 @@
 
 <img src="https://iojs.org/images/1.0.0.png" width="80" >
 
+twitter — [@iojs_ru](https://twitter.com/iojs_ru)
+
 ## Team
 <table>
 <thead>
