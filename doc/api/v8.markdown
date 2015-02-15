@@ -1,14 +1,13 @@
 # V8
 
-    Stability: 1 - Experimental
+    Стабильность: 1 - Экспериментальный
 
-This module exposes events and interfaces specific to the version of [V8][]
-built with io.js.  These interfaces are subject to change by upstream and are
-therefore not covered under the stability index.
+Этот модуль представляет собой события и интерфейс для используемой версии V8 в сборке io.js. 
+Интерфейсы используемые в V8 могут менятся в более новых версиях, в связи с этим этот модуль не попадает под индекс стабильности.
 
 ## getHeapStatistics()
 
-Returns an object with the following properties
+Возвращает объект с следующими свойствами:
 
 ```
 {
@@ -22,19 +21,14 @@ Returns an object with the following properties
 
 ## setFlagsFromString()
 
-Set additional V8 command line flags.  Use with care; changing settings
-after the VM has started may result in unpredictable behavior, including
-crashes and data loss.  Or it may simply do nothing.
+Устанавливает дополнительные флаги из консоли для V8. Используйте с осторожностью; Настройки установленные после инициализации VM могут привести к непредсказуемым последствиям, включая критические ошибки и потерю данных. Или вообще может ничего не происходить.
 
-The V8 options available for a version of io.js may be determined by running
-`iojs --v8-options`.  An unofficial, community-maintained list of options
-and their effects is available
-[here](https://github.com/thlorenz/v8-flags/blob/master/flags-0.11.md).
+Опции доступные для текущей версии V8 используемые в io.js можно получить выполнив `iojs --v8-options`. Неофициальный список опций, поддерживаемый сообществом доступен [здесь](https://github.com/thlorenz/v8-flags/blob/master/flags-0.11.md).
 
-Usage:
+Применение:
 
 ```
-// Print GC events to stdout for one minute.
+// Вывод событий компилятора на "stdout" в течении одной минуты.
 var v8 = require('v8');
 v8.setFlagsFromString('--trace_gc');
 setTimeout(function() { v8.setFlagsFromString('--notrace_gc'); }, 60e3);
