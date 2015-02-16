@@ -3,7 +3,7 @@
     локализация на 29 языках, релиз 1.2.0, и многое другое.
 
 ### Добавили поддержку io.js…
- *  [Postmark](http://blog.postmarkapp.com/post/110829734198/its-official-were-getting-cozy-with-node-js)
+ * [Postmark](http://blog.postmarkapp.com/post/110829734198/its-official-were-getting-cozy-with-node-js)
  * [node-serialport](https://github.com/voodootikigod/node-serialport/issues/439)
  * [Microsoft Azure](http://azure.microsoft.com/en-us/documentation/articles/web-sites-nodejs-iojs/)
 
