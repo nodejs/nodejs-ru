@@ -102,7 +102,7 @@ _Для сообщества ничего не меняется._
 
 Продолжить присылать pull-реквесты
 
-* Добавиться к одной из 27 [команд](https://github.com/iojs/website/issues/125)[локализации](https://github.com/iojs/website/issues/125)
+* Добавиться к одной из 27 [команд локализации](https://github.com/iojs/website/issues/125)
 
 * Помочь одной из рабочих групп ([streams](https://github.com/iojs/readable-stream), [website](https://github.com/iojs/website), [evangelism](https://github.com/iojs/website/labels/evangelism), [tracing](https://github.com/iojs/tracing-wg), [build](https://github.com/iojs/build), [roadmap](https://github.com/iojs/roadmap)) и
 
