@@ -6,14 +6,13 @@
 Обсуждение всех задач — [тут](https://github.com/iojs/iojs-ru/issues).
 
 Следи за новостями в twitter — <a href="https://twitter.com/intent/follow?screen_name=iojs_ru" target="_blank">
-  @iojs_ru
+  @iojs_ru.
 </a>
 
 ## Информация
-На данный момент переводы оформляются пулл реквестами.
-Переводы статей из [medium.com/@iojs](https://medium.com/@iojs) располагаются в `medium/`, страницы сайта в `public/`, документации в `doc/api/`.
+Подробная информация о процессе перевода располагается в  [вики](https://github.com/iojs/iojs-ru/wiki/Что-делать,-если-вы-хотите-что-то-перевести).
 
-Чуть более подробная информация о процессе перевода располагается [здесь](https://github.com/iojs/iojs-ru/wiki/Что-делать,-если-вы-хотите-что-то-перевести)
+Переводы статей из [medium.com/@iojs](https://medium.com/@iojs) располагаются в `medium/`, страницы сайта в `public/`, документации в `doc/api/`.
 
 ## Авторы
 
