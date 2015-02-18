@@ -108,6 +108,6 @@ _Для сообщества ничего не меняется._
 
 * Продолжить использовать io.js в ваших проектах.
 
-Это перевод статьи «io.js Week of February 13th 2015», которую вы можете найти на [medium](https://medium.com/node-js-javascript/io-js-week-of-february-13th-2015-7846b94074a2).
 
-   
+
+Это перевод статьи «io.js Week of February 13th 2015», которую вы можете найти на [medium](https://medium.com/node-js-javascript/io-js-week-of-february-13th-2015-7846b94074a2).
