@@ -30,7 +30,7 @@
 
 * Команды зарегистрировали аккаунты в твиттере и других социальных сетях.
 
-* Каждая комманда придумала свой процесс работы.
+* Каждая комманда придумала свой процесс работы и стала уже не просто переводчиками, а организаторами сообщества.
 
 #### Статистика по локализации
 
@@ -100,12 +100,14 @@ _Для сообщества ничего не меняется._
 
 #### Что вы можете сделать сейчас
 
-Продолжить присылать pull-реквесты
+* Продолжить присылать pull-реквесты
 
 * Добавиться к одной из 27 [команд локализации](https://github.com/iojs/website/issues/125)
 
 * Помочь одной из рабочих групп ([streams](https://github.com/iojs/readable-stream), [website](https://github.com/iojs/website), [evangelism](https://github.com/iojs/website/labels/evangelism), [tracing](https://github.com/iojs/tracing-wg), [build](https://github.com/iojs/build), [roadmap](https://github.com/iojs/roadmap)) и
 
 * Продолжить использовать io.js в ваших проектах.
+
+Это перевод статьи «io.js Week of February 13th 2015», которую вы можете найти на [medium](https://medium.com/node-js-javascript/io-js-week-of-february-13th-2015-7846b94074a2).
 
    
