@@ -26,6 +26,7 @@
 - Oleg Elifantiev ([@Olegas](https://github.com/Olegas))
 - Aleksey Podskrebyshev ([@alexpods](https://github.com/alexpods))
 - Sergey Yeriomin ([@yeriomin](https://github.com/yeriomin))
+- Artem Lebedenko ([@artcygn](https://github.com/artcygn))
 - Ilin Denis ([@DGizmo](https://github.com/DGizmo))
 - grishaVa ([@grishaVa](https://github.com/grishaVa))
 - Danila ([@prog666](https://github.com/prog666))
