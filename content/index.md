@@ -1,8 +1,8 @@
 # JavaScript I/O
 
-Приносим [ES6](es6.html) в Node Сообщество!
+[ES6](es6.html) для Node-сообщества!
 
-[io.js](https://github.com/iojs/io.js) это совместимая с [npm](https://www.npmjs.org/) платформа изначально основанная на [node.js](https://nodejs.org/)&#8482;.
+[io.js](https://github.com/iojs/io.js) &mdash; [npm](https://www.npmjs.org/)-совместимая платформа, разработанная на основе [node.js](https://nodejs.org/)&#8482;.
 
 [![io.js](../images/1.0.0.png)](https://iojs.org/dist/v1.1.0/)
 
@@ -19,4 +19,4 @@
 
 [Ночные сборки](https://iojs.org/download/nightly/) доступны для тестирования.
 
-[Часто задаваемые вопросы](/faq.html)
+[Часто Задаваемые Вопросы](/faq.html)
