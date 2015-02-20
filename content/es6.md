@@ -2,7 +2,7 @@
 
 В основе io.js стоит современная версия [V8](https://code.google.com/p/v8/). Придерживаясь самых последних версий этого движка, мы гарантируем, что новые возможности [спецификации JavaScript ECMA-262](http://www.ecma-international.org/publications/standards/Ecma-262.htm) станут доступны разработчикам io.js своевременно, а вместе с ними и улучшения, связанные с производительностью и стабильностью.
 
-Версия io.js 1.1.0 основана на версии V8 4.1.0.14, которая включает в себя гораздо больше возможностей ES6 в отличие от версии 3.28.73, на которой основан joyent/node@0.12.x
+Версия io.js 1.3.0 основана на версии V8 4.1.0.14, которая включает в себя гораздо больше возможностей ES6 в отличие от версии 3.28.73, на которой основан joyent/node@0.12.x
 
 ## Теперь без флага --harmony
 
@@ -39,7 +39,7 @@
 
     *   [WeakSet](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/WeakSet)
 
-    *   [Генераторы](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/function*)
+*   [Генераторы](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/function*)
 
 *   [Литералы двоичных и восьмеричных чисел](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Lexical_grammar#Numeric_literals)
 
