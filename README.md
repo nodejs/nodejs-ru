@@ -31,3 +31,4 @@
 - Danila ([@prog666](https://github.com/prog666))
 - Ruslan Nekhoroshkin ([@nrvru](https://github.com/nrvru))
 - Erik Kotsuba ([@eko24](https://github.com/eko24))
+- Max Sysoev ([@ColCh](https://github.com/ColCh))
