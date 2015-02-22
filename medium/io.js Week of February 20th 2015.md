@@ -1,37 +1,37 @@
-### io.js Week of February 20th 2015
+### Еженедельник io.js, 20 февраля 2015
 
-1.3.0 release, MongoDB, the roadmap and more.
+Релиз 1.3.0, MongoDB, планы развития и многое другое.
 
-### 1.3.0 Release
+### Релиз 1.3.0
 
-Notable changes include:
+Самые главные изменения:
 
-*   **url**: url.resolve(‘/path/to/file’, ‘.’) now returns /path/to/ with the trailing slash, url.resolve(‘/’, ‘.’) returns / [#278](https://github.com/iojs/io.js/pull/278) (Amir Saboury)
-*   **tls**: The default cipher suite used by tls and https has been changed to one that achieves Perfect Forward Secrecy with all modern browsers. Additionally, insecure RC4 ciphers have been excluded. If you absolutely require RC4, please specify your own cipher suites. [#826](https://github.com/iojs/io.js/pull/826) (Roman Reiss)
+  * **url**: url.resolve('/путь/к/файлу', '.') теперь возвращает путь со слэшем в конце, url.resolve('/', '.') возвращает «/» [#278](https://github.com/iojs/io.js/pull/278) (Amir Saboury).
+  * **tls**: Набор шифров по-умолчанию, используемый tls и https был изменен и теперь обеспечивает совершенную прямая секретность (Perfect Forward Secrecy) для всех современных браузеров. Кроме этого, небезопасные RC4-шифры были исключены из набора. Если вы не можете обойтись без RC4, пожалуйста, указывайте свой собственный набор шифров. [#826](https://github.com/iojs/io.js/pull/826) (Roman Reiss)
 
-### Notable Events in the Community
+### Важные события в сообществе
 
-*   **Node Governance** — [William Bert](https://twitter.com/williamjohnbert) created [http://nodegovernance.io/](http://nodegovernance.io/) to alert Scott Hammond, CEO of Joyent, of the desire of the community for the io.js open-governance model to be the base upon which the Node Foundation’s Technical Committee. The response from the community was _fantastic_!
-*   **Node.js and io.js Performance Improves** — Raygun.io did performance tests with both Node.js and io.js recently, and both are improving performance with each release! [Read the full article](https://raygun.io/blog/2015/02/node-js-performance-node-js-vs-io-js/).
-*   **LTTng Basics** — [LTTing Basics](https://asciinema.org/a/16785) with io.js by user jgalar on asciinema
-*   **io.js Roadmap Slides** — Slide deck for the current roadmap of io.js up.
+  * **Руководство Node** — [William Bert](https://twitter.com/williamjohnbert) создал <http://nodegovernance.io/> для оповещения Скотта Хэммонда, генерального директора Joyent, о желании сообщества сделать модель открытого управления io.js базой для технического комитета Node. Реакция сообщества была *фантастической*!
+  * **Node.js и io.js, улучшают производительность** — Raygun.io недавно провел тесты производительности Node.js и io.js, и оба повышали производительность с каждым релизом! [Узнайте подробности в статье](https://raygun.io/blog/2015/02/node-js-performance-node-js-vs-io-js/).
+  * **Основы LTTng** — [Основы LTTing](https://asciinema.org/a/16785) с io.js от пользователя jgalar на asciinema
+  * **Путь развития io.js** — презентация направления развития io.js.
 
-### io.js Support Added
+### Добавили поддержку io.js
 
-*   [TravisCI](https://travis-ci.org/) added io.js.The day the last Weekly Update was posted, Hiro Asari (あさり) [tweeted](https://twitter.com/hiro_asari/status/566268486012633088) that about 10% of Node projects were running io.js.
-*   [@thlorenz](https://github.com/thlorenz) updated [nad](https://github.com/thlorenz/nad), Node Addon Developer, to [support io.js](https://twitter.com/thlorenz/status/566328088121081856)
-*   [Catberry.js](https://github.com/catberry/catberry) added support for io.js.
-*   Official MongoDB node module supports io.js in [v. 2.0.16 2015–02–16](https://github.com/mongodb/node-mongodb-native/blob/2.0/HISTORY.md).
-*   [The Native Web](http://www.thenativeweb.io/) now has a [io.js Docker container](https://registry.hub.docker.com/u/thenativeweb/iojs/)
-*   [DNSChain](https://github.com/okTurtles/dnschain) by [okTurtles](https://okturtles.com/) added support for io.js.
-*   [TDPAHACLPlugin](https://github.com/neilstuartcraig/TDPAHACLPlugin) and [TDPAHAuthPlugin](https://github.com/neilstuartcraig/TDPAHAuthPlugin) for [actionHero](http://www.actionherojs.com/) now support io.js.
-*   [node-sass](https://npmjs.org/package/node-sass) added support for io.js 1.2 in node-sass [v. 2.0.1](https://github.com/sass/node-sass/issues/655)
-*   [total.js](https://www.totaljs.com/) added support for io.js in [v. 1.7.1](https://github.com/totaljs/framework/releases/tag/v1.7.1)
-*   [Clever Cloud](https://www.clever-cloud.com/) added [support for io.js](https://www.clever-cloud.com/blog/features/2015/01/23/introducing-io.js/)
+  * [TravisCI](https://travis-ci.org/) добавил io.js. Хиро Асари (あさり), [написал в Twitter](https://twitter.com/hiro_asari/status/566268486012633088) в прошлую пятницу, что около 10% Node проектов были запущены под io.js.
+  * [@thlorenz](https://github.com/thlorenz) обновил [nad](https://github.com/thlorenz/nad) (Node Addon Developer). Теперь он [поддерживает io.js](https://twitter.com/thlorenz/status/566328088121081856).
+  * В [Catberry.js](https://github.com/catberry/catberry) добавлена поддержка io.js.
+  * Официальный модуль MongoDB для node.js поддерживает io.js с версии [2.0.16](https://github.com/mongodb/node-mongodb-native/blob/2.0/HISTORY.md) от 16 февраля.
+  * У [The Native Web](http://www.thenativeweb.io/) появился [Docker контейнер для io.js](https://registry.hub.docker.com/u/thenativeweb/iojs/).
+  * [DNSChain](https://github.com/okTurtles/dnschain) от [okTurtles](https://okturtles.com/) добавили поддержку io.js.
+  * [TDPAHACLPlugin](https://github.com/neilstuartcraig/TDPAHACLPlugin) и [TDPAHAuthPlugin](https://github.com/neilstuartcraig/TDPAHAuthPlugin) для [actionHero](http://www.actionherojs.com/) теперь поддерживают io.js.
+  * [node-sass](https://npmjs.org/package/node-sass) добавил поддержку io.js 1.2 в версии [2.0.1](https://github.com/sass/node-sass/issues/655).
+  * [Total.js](https://www.totaljs.com/) добавил поддержку io.js в [1.7.1](https://github.com/totaljs/framework/releases/tag/v1.7.1).
+  * [Clever Cloud](https://www.clever-cloud.com/) добавили [поддержку для io.js](https://www.clever-cloud.com/blog/features/2015/01/23/introducing-io.js/).
 
-### io.js Working Group Meetings
+### Собрания Рабочих Групп io.js
 
-*   io.js Tracing Working Group Meeting — Feb. 19, 2015: [YouTube](https://www.youtube.com/watch?v=wvBVjg8jkv0) — [Minutes](https://docs.google.com/document/d/1_ApOMt03xHVkaGpTEPMDIrtkjXOzg3Hh4ZcyfhvMHx4/edit)
-*   io.js Build Working Group Meeting — Feb. 19, 2015: [YouTube](https://www.youtube.com/watch?v=OKQi3pTF7fs) — [SoundCloud](https://soundcloud.com/iojs/iojs-build-wg-meeting-2015-02-19) — [Minutes](https://docs.google.com/document/d/1vRhsYBs4Hw6vRu55h5eWTwDzS1NctxdTvMMEnCbDs14/edit)
-*   io.js Technical Committee Meeting — Feb. 18, 2015: [YouTube](https://www.youtube.com/watch?v=jeBPYLJ2_Yc) — [SoundCloud](https://soundcloud.com/iojs/iojs-tc-meeting-meeting-2015-02-18) — [Minutes](https://docs.google.com/document/d/1JnujRu6Rfnp6wvbvwCfxXnsjLySunQ_yah91pkvSFdQ/edit)
-*   io.js Website Working Group Meeting — Feb. 16, 2015: [YouTube](https://www.youtube.com/watch?v=UKDKhFV61ZA) — [SoundCloud](https://soundcloud.com/iojs/iojs-website-wg-meeting-2015-02-16) — [Minutes](https://docs.google.com/document/d/1R8JmOoyr64tt-QOj27bD19ZOWg63CujW7GeaAHIIkUs/edit)
+  * Собрание io.js Tracing Working Group — 19 февраля 2015: [YouTube](https://www.youtube.com/watch?v=wvBVjg8jkv0) — [Minutes](https://docs.google.com/document/d/1_ApOMt03xHVkaGpTEPMDIrtkjXOzg3Hh4ZcyfhvMHx4/edit)
+  * Собрание io.js Build Working Group — 19 февраля 2015: [YouTube](https://www.youtube.com/watch?v=OKQi3pTF7fs) — [SoundCloud](https://soundcloud.com/iojs/iojs-build-wg-meeting-2015-02-19) — [Minutes](https://docs.google.com/document/d/1vRhsYBs4Hw6vRu55h5eWTwDzS1NctxdTvMMEnCbDs14/edit)
+  * Собрание io.js Technical Committee — 18 февраля 2015: [YouTube](https://www.youtube.com/watch?v=jeBPYLJ2_Yc) — [SoundCloud](https://soundcloud.com/iojs/iojs-tc-meeting-meeting-2015-02-18) — [Minutes](https://docs.google.com/document/d/1JnujRu6Rfnp6wvbvwCfxXnsjLySunQ_yah91pkvSFdQ/edit)
+  * Собрание io.js Website Working Group — 16 февраля 2015: [YouTube](https://www.youtube.com/watch?v=UKDKhFV61ZA) — [SoundCloud](https://soundcloud.com/iojs/iojs-website-wg-meeting-2015-02-16) — [Minutes](https://docs.google.com/document/d/1R8JmOoyr64tt-QOj27bD19ZOWg63CujW7GeaAHIIkUs/edit)
