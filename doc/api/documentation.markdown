@@ -1,82 +1,63 @@
-# About this Documentation
+# Цель данного руководства
 
 <!-- type=misc -->
 
-The goal of this documentation is to comprehensively explain the io.js
-API, both from a reference as well as a conceptual point of view.  Each
-section describes a built-in module or high-level concept.
+Целью данного руководства является как можно более полное описание API io.js, а также описание концептуальных особенностей данной технологии. Каждый раздел описывает особенности реализации соответствующий высокоуровневой технологии.
 
-Where appropriate, property types, method arguments, and the arguments
-provided to event handlers are detailed in a list underneath the topic
-heading.
+Там, где это необходимо, свойства, их типы, аргументы методов и событий подробно описаны.
 
-Every `.html` document has a corresponding `.json` document presenting
-the same information in a structured manner.  This feature is
-experimental, and added for the benefit of IDEs and other utilities that
-wish to do programmatic things with the documentation.
+Для каждого html-документа есть аналогичная копия в формате .json. Данный функционал является экспериментальным и создан для автоматизации создания документации различными утилитами.
 
-Every `.html` and `.json` file is generated based on the corresponding
-`.markdown` file in the `doc/api/` folder in node's source tree.  The
-documentation is generated using the `tools/doc/generate.js` program.
-The HTML template is located at `doc/template.html`.
+Все .html и .json файлы генерируются из исходников в формате .markdown которые находятся в  doc/api. Документация генерируется скриптом, который располагается в tools/doc/generate.js. Html-шаблоны находятся в doc/template.html.
 
-## Stability Index
+## Уровень стабильности
 
 <!--type=misc-->
 
-Throughout the documentation, you will see indications of a section's
-stability.  The io.js API is still somewhat changing, and as it
-matures, certain parts are more reliable than others.  Some are so
-proven, and so relied upon, that they are unlikely to ever change at
-all.  Others are brand new and experimental, or known to be hazardous
-and in the process of being redesigned.
+Каждому разделу данной документации присвоен соответствующей ей уровень стабильности. API io.js все ещё находится в разработке и, в связи с этим, некоторые элементы ещё нестабильны и не готовы к использованию в реальных проектах. Некоторые разделы тщательно проработаны и в будущем вряд ли будут изменены, другие являются экспериментальными и могут быть кардинально переработаны или же вовсе удалены.
 
-The stability indices are as follows:
+Уровни стабильности:
 
 ```
-Stability: 0 - Deprecated
-This feature is known to be problematic, and changes are
-planned.  Do not rely on it.  Use of the feature may cause warnings.  Backwards
-compatibility should not be expected.
+Уровень 0(Устаревший): 
+
+Функционал является нестабильным или устаревшим, и, в дальнейшем будет изменен или вовсе удален. Обратная совместимость не гарантируется.
 ```
 
 ```
-Stability: 1 - Experimental
-This feature was introduced recently, and may change
-or be removed in future versions.  Please try it out and provide feedback.
-If it addresses a use-case that is important to you, tell the node core team.
+Уровень 1(Экспериментальный):
+
+Введен недавно и в будущем может быть удален.  Если у вас при тестировании возникли ошибки или странное поведение которое не описано в документации, пожалуйста, сообщите об этом сообществу.
 ```
 
 ```
-Stability: 2 - Unstable
-The API is in the process of settling, but has not yet had
-sufficient real-world testing to be considered stable. Backwards-compatibility
-will be maintained if reasonable.
+Уровень 2(нестабильный):
+
+Находится в стадии разработки и основательно не протестирован, при необходимости в дальнейшем может быть изменен. Обратная совместимость гарантированна в разумных пределах.
 ```
 
 ```
-Stability: 3 - Stable
-The API has proven satisfactory, but cleanup in the underlying
-code may cause minor changes.  Backwards-compatibility is guaranteed.
+Уровень 3(Стабильный):
+
+Является стабильным, в будущем возможны незначительные изменения. Обратная совместимость гарантированна.
 ```
 
 ```
-Stability: 4 - API Frozen
-This API has been tested extensively in production and is
-unlikely to ever have to change.
+Уровень 4(Зафиксирован):
+
+Тщательно протестирован и вряд ли будет изменен в будущем.
 ```
 
 ```
-Stability: 5 - Locked
-Unless serious bugs are found, this code will not ever
-change.  Please do not suggest changes in this area; they will be refused.
+Уровень 5(Заблокирован):
+
+Может быть изменен только в случае обнаружения критических ошибок. Просьба не предлагать по нему изменений.
 ```
 
 ## JSON Output
 
-    Stability: 1 - Experimental
+	Уровень 1(Экспериментальный):
 
-Every HTML file in the markdown has a corresponding JSON file with the
-same data.
+Для каждого html-файла с .markdown разметкой есть аналогичный в формате json.
 
-This feature is new as of node v0.6.12.  It is experimental.
+Данная функция и считается новой в node v0.6.12 и является экспериментальной.
