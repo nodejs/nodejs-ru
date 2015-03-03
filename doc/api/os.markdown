@@ -1,71 +1,65 @@
-# os
+# OS
 
-    Stability: 4 - API Frozen
+    Стабильность: 2 - Стабильный
+    
 
-Provides a few basic operating-system related utility functions.
+Предоставляет несколько простых функций, относящихся к операционной системе.
 
-Use `require('os')` to access this module.
+Используйте `require('os')` для доступа к этому модулю.
 
 ## os.tmpdir()
 
-Returns the operating system's default directory for temp files.
+Возвращает каталог по умолчанию для временных файлов операционной системы.
 
 ## os.endianness()
 
-Returns the endianness of the CPU. Possible values are `"BE"` or `"LE"`.
+Возвращает порядок байтов процессора. Возможными значениями могут быть `«BE»` для порядка байтов от старшего к младшему или `«LE»` для порядка байтов от младшего к старшему.
 
 ## os.hostname()
 
-Returns the hostname of the operating system.
+Возвращает имя хоста операционной системы.
 
 ## os.type()
 
-Returns the operating system name.
+Возвращает название операционной системы. Например `'Linux'`для Linux, `'Darwin'` для OS X и `'Windows_NT'` для Windows.
 
 ## os.platform()
 
-Returns the operating system platform.
+Возвращает платформу операционной системы. Возможными значения могут быть - `'darwin'`, `'freebsd'`, `'linux'`, `'sunos'` или `'win32'`. Возвращает значение `process.platform`.
 
 ## os.arch()
 
-Returns the operating system CPU architecture. Possible values are `"x64"`,
-`"arm"` and `"ia32"`.
+Возвращает архитектуру процессора операционной системы. Возможными значениями являются `«x64»`, `«arm»` и `«ia32»`. Возвращает значение `process.arch`.
 
 ## os.release()
 
-Returns the operating system release.
+Возвращает версию операционной системы.
 
 ## os.uptime()
 
-Returns the system uptime in seconds.
+Возвращает время непрерывной работы системы в секундах.
 
 ## os.loadavg()
 
-Returns an array containing the 1, 5, and 15 minute load averages.
+Возвращает массив, содержащий среднюю загрузку системы за 1, 5 и 15 минут.
 
-The load average is a measure of system activity, calculated by the operating
-system and expressed as a fractional number.  As a rule of thumb, the load
-average should ideally be less than the number of logical CPUs in the system.
+Средняя загрузка является мерой активности системы, которая определяется операционной системой и выражена в виде дробного числа. Как правило средняя загрузка в идеале должна быть меньше количества логических процессоров в системе.
 
-The load average is a very UNIX-y concept; there is no real equivalent on
-Windows platforms.  That is why this function always returns `[0, 0, 0]` on
-Windows.
+Средняя нагрузка является исключительно UNIX-овой концепцией; нет реального эквивалента для платформы Windows. Поэтому эта функция в Windows всегда возвращает `[0, 0, 0]`.
 
 ## os.totalmem()
 
-Returns the total amount of system memory in bytes.
+Возвращает общее количество системной памяти в байтах.
 
 ## os.freemem()
 
-Returns the amount of free system memory in bytes.
+Возвращает количество свободной системной памяти в байтах.
 
 ## os.cpus()
 
-Returns an array of objects containing information about each CPU/core
-installed: model, speed (in MHz), and times (an object containing the number of
-milliseconds the CPU/core spent in: user, nice, sys, idle, and irq).
+Возвращает массив объектов, содержащих сведения о каждом установленном процессорe/ядрe: модель, тактовая частота (в МГц) и время (объект, содержащий количество миллисекунд, которое ядро ЦП провело в режиме: user, nice, sys, idle и irq).
 
-Example inspection of os.cpus:
+Пример результата os.cpus():
 
     [ { model: 'Intel(R) Core(TM) i7 CPU         860  @ 2.80GHz',
         speed: 2926,
@@ -131,10 +125,13 @@ Example inspection of os.cpus:
            sys: 34920,
            idle: 1072572010,
            irq: 30 } } ]
+    
+Обратите внимание, так как значение `nice` ориентировано на UNIX, в Windows оно всегда будет равно 0 для всех процессоров.
+    
 
 ## os.networkInterfaces()
 
-Get a list of network interfaces:
+Возвращает список сетевых интерфейсов:
 
     { lo:
        [ { address: '127.0.0.1',
@@ -159,9 +156,8 @@ Get a list of network interfaces:
            mac: '01:02:03:0a:0b:0c',
            internal: false } ] }
 
-Note that due to the underlying implementation this will only return network
-interfaces that have been assigned an address.
+Обратите внимание, что из-за особенностей реализации будут возвращены только сетевые интерфейсы, которым назначены адреса.
 
 ## os.EOL
 
-A constant defining the appropriate End-of-line marker for the operating system.
+Константа, определяющая соответствующий указатель конца строки операционной системы.
