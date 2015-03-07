@@ -1,68 +1,65 @@
 # Assert
 
-    Stability: 5 - Locked
+    Стабильность: 2 - Стабильный
+    
 
-This module is used for writing unit tests for your applications, you can
-access it with `require('assert')`.
+Этот модуль используется для написания модульных тестов для приложений, подключается через `require('assert')`.
 
 ## assert.fail(actual, expected, message, operator)
 
-Throws an exception that displays the values for `actual` and `expected` separated by the provided operator.
+Создает исключение, которое отображает фактическое (`actual`) и ожидаемое (`expected`) значения, разделенные предоставленным оператором.
 
 ## assert(value, message), assert.ok(value[, message])
 
-Tests if value is truthy, it is equivalent to `assert.equal(true, !!value, message);`
+Проверяет истинность значения, данная проверка аналогична `assert.equal(true, !!value, message);`
 
 ## assert.equal(actual, expected[, message])
 
-Tests shallow, coercive equality with the equal comparison operator ( `==` ).
+Проверка на равенство с приведением типов значений. Аналогично сравнению через (`==`).
 
 ## assert.notEqual(actual, expected[, message])
 
-Tests shallow, coercive non-equality with the not equal comparison operator ( `!=` ).
+Проверка на неравенство без приведения типов, аналогично сравнению через (`!=`).
 
 ## assert.deepEqual(actual, expected[, message])
 
-Tests for deep equality. Primitive values are compared with the equal comparison
-operator ( `==` ). Doesn't take object prototypes into account.
+Проверка на глубокое равенство. Примитивные значения сравниваются с помощью оператора сравнения - равно (`==`). Не учитывает прототипы объектов.
 
 ## assert.notDeepEqual(actual, expected[, message])
 
-Tests for any deep inequality. Opposite of `assert.deepEqual`.
+Проверка на любое глубокое неравенство, противоположно `assert.deepEqual`.
 
 ## assert.strictEqual(actual, expected[, message])
 
-Tests strict equality, as determined by the strict equality operator ( `===` )
+Проверка на строгое равенство. Значения сравниваются без неявного приведения типов, аналогом данного сравнения является использование оператора (`===`).
 
 ## assert.notStrictEqual(actual, expected[, message])
 
-Tests strict non-equality, as determined by the strict not equal
-operator ( `!==` )
+Проверка на строгое неравенство. Значения сравниваются без неявного приведения типов, аналогом данного сравнения является использование оператора (`!==`).
 
 ## assert.deepStrictEqual(actual, expected[, message])
 
-Tests for deep equality. Primitive values are compared with the strict equality
-operator ( `===` ).
+Проверка на глубокое строгое равенство. Значения сравниваются без неявного приведения типов, аналогом данного сравнения является использование оператора (`===`).
 
 ## assert.notDeepStrictEqual(actual, expected[, message])
 
-Tests for deep inequality. Opposite of `assert.deepStrictEqual`.
+Проверка на строгое глубокое неравенство. Противоположно `assert.deepStrictEqual`.
 
-## assert.throws(block[, error][, message])
+## assert.throws(block&#91;, error&#93;&#91;, message&#93;)
 
-Expects `block` to throw an error. `error` can be constructor, `RegExp` or
-validation function.
+Ожидает, что блок (`block`) вызовет ошибку. Ошибка (`error`) может быть конструктором, регулярным выражением (`RegExp`) или проверочной функцией.
 
-Validate instanceof using constructor:
+Проверка instanceof с помощью конструктора:
 
     assert.throws(
       function() {
-        throw new Error("Wrong value");
+         throw new Error("Wrong value");
       },
       Error
     );
+    
 
-Validate error message using RegExp:
+Проверка сообщения об ошибке, используя регулярное выражение:
 
     assert.throws(
       function() {
@@ -70,8 +67,9 @@ Validate error message using RegExp:
       },
       /value/
     );
+    
 
-Custom error validation:
+Пользовательская проверка ошибок:
 
     assert.throws(
       function() {
@@ -81,15 +79,15 @@ Custom error validation:
         if ( (err instanceof Error) && /value/.test(err) ) {
           return true;
         }
-      },
+    },
       "unexpected error"
     );
+    
 
 ## assert.doesNotThrow(block[, message])
 
-Expects `block` not to throw an error, see `assert.throws` for details.
+Ожидает, что блок (`block`) не вызовет ошибку, см. `assert.throws` для подробной информации.
 
 ## assert.ifError(value)
 
-Tests if value is not a false value, throws if it is a true value. Useful when
-testing the first argument, `error` in callbacks.
+Проверяет, является ли value не ложным, создает исключение, если value равно true. Полезно при тестировании первого аргумента, `error` в обратных вызовах.
