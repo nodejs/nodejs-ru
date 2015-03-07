@@ -2,6 +2,7 @@
 > Перевод [io.js](https://iojs.org/) на русский язык. :ru:
 
 [![Gitter](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/iojs/iojs-ru?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)
+[![Crowdin](https://d322cqt584bo4o.cloudfront.net/iojs-ru/localized.png)](https://crowdin.com/project/iojs-ru)
 
 Обсуждение всех задач — [тут](https://github.com/iojs/iojs-ru/issues).
 
