@@ -1,51 +1,48 @@
-# io.js 1.5.0 Release
+# Еженедельник io.js, 6 марта 2015
 
-On Friday, March 6th, [@rvagg](https://github.com/rvagg) released io.js [**v1.5.0**](https://iojs.org/dist/latest/).  The complete change log can be found [on GitHub](https://github.com/iojs/io.js/blob/v1.x/CHANGELOG.md).
+Buffer.indexOf(), Tessel 2 и многое другое.
 
-### Notable changes
+## Релиз io.js 1.5.0
 
-* **buffer**: New `Buffer#indexOf()` method, modelled off [`Array#indexOf()`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/indexOf). Accepts a String, Buffer or a Number. Strings are interpreted as UTF8. (Trevor Norris) [#561](https://github.com/iojs/io.js/pull/561)
-* **fs**: `options` object properties in `'fs'` methods no longer perform a `hasOwnProperty()` check, thereby allowing options objects to have prototype properties that apply. (Jonathan Ong) [#635](https://github.com/iojs/io.js/pull/635)
-* **tls**: A likely TLS memory leak was reported by PayPal. Some of the recent changes in **stream_wrap** appear to be to blame. The initial fix is in [#1078](https://github.com/iojs/io.js/pull/1078), you can track the progress toward closing the leak at [#1075](https://github.com/iojs/io.js/issues/1075) (Fedor Indutny).
-* **npm**: Upgrade npm to 2.7.0. See [npm CHANGELOG.md](https://github.com/npm/npm/blob/master/CHANGELOG.md#v270-2015-02-26) for details including why this is a semver-minor when it could have been semver-major.
-* **TC**: Colin Ihrig (@cjihrig) resigned from the TC due to his desire to do more code and fewer meetings.
+В пятницу 6-го марта [@rvagg](https://github.com/rvagg) выпустил io.js [**v1.5.0**](https://iojs.org/dist/latest/).  Полный список изменений можно найти [на GitHub-е](https://github.com/iojs/io.js/blob/v1.x/CHANGELOG.md).
 
-### Known issues
+### Основные изменения
 
-* Possible TLS-related memory leak, details at [#1075](https://github.com/iojs/io.js/issues/1075).
-* Windows still reports some minor test failures and we are continuing to address all of these as a priority. See [#1005](https://github.com/iojs/io.js/issues/1005).
-* Surrogate pair in REPL can freeze terminal [#690](https://github.com/iojs/io.js/issues/690)
-* Not possible to build io.js as a static library [#686](https://github.com/iojs/io.js/issues/686)
-* `process.send()` is not synchronous as the docs suggest, a regression introduced in 1.0.2, see [#760](https://github.com/iojs/io.js/issues/760) and fix in [#774](https://github.com/iojs/io.js/issues/774)
+* **buffer**: Новый метод `Buffer#indexOf()`, подобный [`Array#indexOf()`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/indexOf). Может принимать в качестве аргумента строку, Buffer или число. Строки интерпретируются как UTF8. (Trevor Norris) [#561](https://github.com/iojs/io.js/pull/561)
+* **fs**: Объект параметров `options` в методах модуля `'fs'` больше не выполняет проверку `hasOwnProperty()`, позволяя объектам параметров иметь свойства в прототипах, которые будут применяться. (Jonathan Ong) [#635](https://github.com/iojs/io.js/pull/635)
+* **tls**: Компания PayPal сообщила о вероятной утечке памяти в TLS. Некоторые недавние изменения в  **stream_wrap** оказались виновными в этом. Первоночальная правка расположена в [#1078](https://github.com/iojs/io.js/pull/1078), вы можете следить за прогрессом устранения утечки в [#1075](https://github.com/iojs/io.js/issues/1075) (Fedor Indutny).
+* **npm**: Обновление npm до 2.7.0. Смотрите [npm CHANGELOG.md](https://github.com/npm/npm/blob/master/CHANGELOG.md#v270-2015-02-26), чтобы получить более подробную информацию, включая почему это минорное увеличение версии, хотя могло бы быть мажорным.
+* **TC**: Colin Ihrig (@cjihrig) отказался от участия в Техническом Комитете из-за желания больше писать код и меньше участвовать в собраниях.
 
-# Community Updates
+### Известные проблемы
 
-* You can relax knowing that io.js and latest node.js [**are not affected**](https://strongloop.com/strongblog/are-node-and-io-js-affected-by-the-freak-attack-openssl-vulnerability/) by the [FREAK Attack](https://freakattack.com/).  You are running io.js or the latest version of node.js, right?
+* Возможна утечка памяти в TLS, более подробную информацию можно найти в [#1075](https://github.com/iojs/io.js/issues/1075).
+* Некоторые тесты в ОС Windows всё ещё завершаются неудачно. Исправление связанных с ними ошибок является для нас приоритетной задачей. Смотрите [#1005](https://github.com/iojs/io.js/issues/1005).
+* Суррогатная пара в REPL может привести к зависанию терминала [#690](https://github.com/iojs/io.js/issues/690)
+* Невозможно собрать io.js как статическую библиотеку [#686](https://github.com/iojs/io.js/issues/686)
+* `process.send()` не синхронный, как предполагает документация, откат введен в 1.0.2, смотретие [#760](https://github.com/iojs/io.js/issues/760) и правку в [#774](https://github.com/iojs/io.js/issues/774)
 
-* Walmart is now sponsoring a build machine for the io.js Jenkins CI system.  The @iojs/build team is working on creating io.js SunOS binaries (like you can get from nodejs.org).  A V8 fix ([iojs/io.js#1079](https://github.com/iojs/io.js/pull/1079)) needs to be landed first before more progress can be made.
-* We would also like to thank the following companies for contributing hardware and related technology/support/engineering for io.js builds:
-  * **Digital Ocean** (mainly Linux)
-  * **Rackspace** (mainly Windows)
-  * **Voxer** (OS X and FreeBSD)
+## Новости сообщества
+
+* Вы можете спать спокойно, зная что io.js и последний node.js [**не подвержены**](https://strongloop.com/strongblog/are-node-and-io-js-affected-by-the-freak-attack-openssl-vulnerability/) [FREAK Аттаке](https://freakattack.com/).  Вы ведь запускаете io.js или последнюю версию node.js, не так ли?
+* Walmart теперь спонсируют сборочную машину для системы io.js Jenkins CI.  Команда @iojs/build работает над созданием бинарников io.js для SunOS (подобно тем, которые вы можете получить на nodejs.org).  Необходимо внести правку в V8 ([iojs/io.js#1079](https://github.com/iojs/io.js/pull/1079)) для продолжения работы.
+* Мы также хотели бы поблагодорить следующие компании за их вклад в технологии/поддержку/проектирование/оборудование для сборок io.js:
+  * **Digital Ocean** (Linux)
+  * **Rackspace** (Windows)
+  * **Voxer** (OS X и FreeBSD)
   * **NodeSource** (ARMv6 & ARMv7)
   * **Linaro** (ARMv8)
   * **Walmart** (SmartOS / Solaris)
-* The io.js community has been hard at work on the internationalization of all of its content.  There are now over 20 active languages published on [iojs.org](http://iojs.org) and i18n community sites.  Additionally, i18n links ([iojs/website#258](https://github.com/iojs/website/pull/258)) have been added to the website footer for easy access.  Are we missing your language?  [Help us add it!](https://github.com/iojs/website/blob/master/TRANSLATION.md)
-* Speaking of translations, the [io.js roadmap presentation](http://roadmap.iojs.org/) has been updated to link to other language versions.
+* Сообщество io.js усердно работает над интернационализацией всего своего контента. Более 20 языков опубликовано на [iojs.org](http://iojs.org) и международных сайтах сообщества. В дополнение к этому, в футер веб-сайта были добавлены ссылки на переводы ([iojs/website#258](https://github.com/iojs/website/pull/258)) для более удобного доступа. Ваш язык отсутствует?  [Помогите нам добавить его!](https://github.com/iojs/website/blob/master/TRANSLATION.md)
+* Говоря о переводах, в [презентацию плана развития io.js](http://roadmap.iojs.org/) были добавлены ссылки на переводы на другие языки.
+* Кажется, **PayPal** проводит эксперимент, сравнивая работу [Kappa](https://www.npmjs.com/package/kappa) на io.js, node.js 0.12, node.js v0.10.  Команда PayPal обнаружила вероятную утечку памяти в TLS. Первоначальная правка расположена в [#1078](https://github.com/iojs/io.js/pull/1078), а прогресс работы в отношении устранения утечки в [#1075](https://github.com/iojs/io.js/issues/1075)
+* [**NodeSource**](http://nodesource.com) теперь поддерживает io.js. Пакет [Linux binary](https://nodesource.com/blog/nodejs-v012-iojs-and-the-nodesource-linux-repositories) как для Ubuntu/Debian, так и для дистрибутива RHEL/Fedora.
+* io.js [Docker build](https://registry.hub.docker.com/u/library/iojs/) - одна из тринадцати новых [официальных Docker репозиториев](http://blog.docker.com/2015/03/thirteen-new-official-repositories-added-in-january-and-february/), добавленных в январе и феврале.
+* Люди, интересующиеся NodeBots и IoT, должны быть счастливы услышать, что [**Tessel2**](http://blog.technical.io/post/112787427217/tessel-2-new-hardware-for-the-tessel-ecosystem) теперь запускает [io.js нативно](http://blog.technical.io/post/112888410737/moving-faster-with-io-js).
+* [**@maxbeatty**](https://twitter.com/maxbeatty) работает над новой версией бэкэнда [jsperf.com](http://jsperf.com/), запускаемой на io.js и полностью [с открытым исходным кодом](https://github.com/jsperf/jsperf.com).  Желающие помочь, добро пожаловать!
+* [@eranhammer](https://twitter.com/eranhammer) написал пост под названием [The Node Version Dilemma](http://hueniverse.com/2015/03/02/the-node-version-dilemma/), который обсуждает различные версии node.js / io.js и предлагает когда и какие из них можно использовать.
 
-* It seems that **PayPal** is running an experiment comparing [Kappa](https://www.npmjs.com/package/kappa)  on io.js vs node.js 0.12 vs node.js v0.10.  The PayPal team identified a likely TLS memory leak. Initial fix is in [#1078](https://github.com/iojs/io.js/pull/1078) and progress towards closing is in [#1075](https://github.com/iojs/io.js/issues/1075)
+## Добавили поддержку io.js
 
-* [**NodeSource**](http://nodesource.com) is now providing io.js [Linux binary](https://nodesource.com/blog/nodejs-v012-iojs-and-the-nodesource-linux-repositories) packages for Ubuntu/Debian as well as RHEL/Fedora distributions.
-* The io.js [Docker build](https://registry.hub.docker.com/u/library/iojs/) is one of thirteen new [official Docker repositories](http://blog.docker.com/2015/03/thirteen-new-official-repositories-added-in-january-and-february/) added in January and February.
-
-* NodeBots and IoT people should be happy to hear that the just-announced [**Tessel2**](http://blog.technical.io/post/112787427217/tessel-2-new-hardware-for-the-tessel-ecosystem) runs [io.js natively](http://blog.technical.io/post/112888410737/moving-faster-with-io-js).
-* [**@maxbeatty**](https://twitter.com/maxbeatty) is working on a new version of the [jsperf.com](http://jsperf.com/) backend, running on io.js and it is entirely [open source](https://github.com/jsperf/jsperf.com).  Contributions are welcome!
-
-* [@eranhammer](https://twitter.com/eranhammer) wrote a blog post called [The Node Version Dilemma](http://hueniverse.com/2015/03/02/the-node-version-dilemma/) which discusses the various node.js / io.js versions and proposes which ones to use and when to use them.
-
-
-
-# io.js Support Added
-
-* **[scrypt](https://npmjs.com/scrypt)** now supports io.js. Learn more from this [GitHub issue](https://github.com/barrysteyn/node-scrypt/issues/39)
-* **[proxyquire](https://github.com/thlorenz/proxyquire)** v1.3.2 published with support for iojs.
+* **[scrypt](https://npmjs.com/scrypt)** теперь поддерживает io.js. Узнайте больше из [GitHub issue](https://github.com/barrysteyn/node-scrypt/issues/39)
+* **[proxyquire](https://github.com/thlorenz/proxyquire)** v1.3.2 опубликована с поддержкой iojs.
