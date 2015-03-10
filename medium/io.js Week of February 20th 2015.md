@@ -6,8 +6,8 @@
 
 Самые главные изменения:
 
-  * **url**: url.resolve('/путь/к/файлу', '.') теперь возвращает путь со слэшем в конце, url.resolve('/', '.') возвращает «/» [#278](https://github.com/iojs/io.js/pull/278) (Amir Saboury).
-  * **tls**: Набор шифров по-умолчанию, используемый tls и https был изменен и теперь обеспечивает совершенную прямую секретность (Perfect Forward Secrecy) для всех современных браузеров. Кроме этого, небезопасные RC4-шифры были исключены из набора. Если вы не можете обойтись без RC4, пожалуйста, указывайте свой собственный набор шифров. [#826](https://github.com/iojs/io.js/pull/826) (Roman Reiss)
+  * **url**: url.resolve('/путь/к/файлу', '.') теперь возвращает путь с косой чертой в конце, url.resolve('/', '.') возвращает «/» [#278](https://github.com/iojs/io.js/pull/278) (Amir Saboury).
+  * **tls**: Набор шифров по умолчанию, используемый tls и https был изменен и теперь обеспечивает совершенную прямую секретность (Perfect Forward Secrecy) для всех современных браузеров. Кроме этого, небезопасные RC4-шифры были исключены из набора. Если вы не можете обойтись без RC4, пожалуйста, указывайте свой собственный набор шифров. [#826](https://github.com/iojs/io.js/pull/826) (Roman Reiss)
 
 ### Важные события в сообществе
 
@@ -18,7 +18,7 @@
 
 ### Добавили поддержку io.js
 
-  * [TravisCI](https://travis-ci.org/) добавил io.js. Хиро Асари (あさり), [написал в Twitter](https://twitter.com/hiro_asari/status/566268486012633088) в прошлую пятницу, что около 10% Node проектов были запущены под io.js.
+  * [TravisCI](https://travis-ci.org/) добавил io.js. Hiro Asari (あさり), [написал в Twitter](https://twitter.com/hiro_asari/status/566268486012633088) в прошлую пятницу, что около 10% Node проектов были запущены под io.js.
   * [@thlorenz](https://github.com/thlorenz) обновил [nad](https://github.com/thlorenz/nad) (Node Addon Developer). Теперь он [поддерживает io.js](https://twitter.com/thlorenz/status/566328088121081856).
   * В [Catberry.js](https://github.com/catberry/catberry) добавлена поддержка io.js.
   * Официальный модуль MongoDB для node.js поддерживает io.js с версии [2.0.16](https://github.com/mongodb/node-mongodb-native/blob/2.0/HISTORY.md) от 16 февраля.
