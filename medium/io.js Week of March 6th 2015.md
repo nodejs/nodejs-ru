@@ -10,7 +10,7 @@ Buffer.indexOf(), Tessel 2 и многое другое.
 
 * **buffer**: Новый метод `Buffer#indexOf()`, подобный [`Array#indexOf()`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/indexOf). Может принимать в качестве аргумента строку, Buffer или число. Строки интерпретируются как UTF8. (Trevor Norris) [#561](https://github.com/iojs/io.js/pull/561)
 * **fs**: Объект параметров `options` в методах модуля `'fs'` больше не выполняет проверку `hasOwnProperty()`, позволяя объектам параметров иметь свойства в прототипах, которые будут применяться. (Jonathan Ong) [#635](https://github.com/iojs/io.js/pull/635)
-* **tls**: Компания PayPal сообщила о вероятной утечке памяти в TLS. Некоторые недавние изменения в  **stream_wrap** оказались виновными в этом. Первоночальная правка расположена в [#1078](https://github.com/iojs/io.js/pull/1078), вы можете следить за прогрессом устранения утечки в [#1075](https://github.com/iojs/io.js/issues/1075) (Fedor Indutny).
+* **tls**: Компания PayPal сообщила о вероятной утечке памяти в TLS. Некоторые недавние изменения в  **stream_wrap** оказались виновными в этом. Первоначальная правка расположена в [#1078](https://github.com/iojs/io.js/pull/1078), вы можете следить за прогрессом устранения утечки в [#1075](https://github.com/iojs/io.js/issues/1075) (Fedor Indutny).
 * **npm**: Обновление npm до 2.7.0. Смотрите [npm CHANGELOG.md](https://github.com/npm/npm/blob/master/CHANGELOG.md#v270-2015-02-26), чтобы получить более подробную информацию, включая почему это минорное увеличение версии, хотя могло бы быть мажорным.
 * **TC**: Colin Ihrig (@cjihrig) отказался от участия в Техническом Комитете из-за желания больше писать код и меньше участвовать в собраниях.
 
@@ -20,13 +20,13 @@ Buffer.indexOf(), Tessel 2 и многое другое.
 * Некоторые тесты в ОС Windows всё ещё завершаются неудачно. Исправление связанных с ними ошибок является для нас приоритетной задачей. Смотрите [#1005](https://github.com/iojs/io.js/issues/1005).
 * Суррогатная пара в REPL может привести к зависанию терминала [#690](https://github.com/iojs/io.js/issues/690)
 * Невозможно собрать io.js как статическую библиотеку [#686](https://github.com/iojs/io.js/issues/686)
-* `process.send()` не синхронный, как предполагает документация, откат введен в 1.0.2, смотретие [#760](https://github.com/iojs/io.js/issues/760) и правку в [#774](https://github.com/iojs/io.js/issues/774)
+* `process.send()` не синхронный, как предполагает документация, откат введен в 1.0.2, смотрите [#760](https://github.com/iojs/io.js/issues/760) и правку в [#774](https://github.com/iojs/io.js/issues/774)
 
 ## Новости сообщества
 
-* Вы можете спать спокойно, зная что io.js и последний node.js [**не подвержены**](https://strongloop.com/strongblog/are-node-and-io-js-affected-by-the-freak-attack-openssl-vulnerability/) [FREAK Аттаке](https://freakattack.com/).  Вы ведь запускаете io.js или последнюю версию node.js, не так ли?
-* Walmart теперь спонсируют сборочную машину для системы io.js Jenkins CI.  Команда @iojs/build работает над созданием бинарников io.js для SunOS (подобно тем, которые вы можете получить на nodejs.org).  Необходимо внести правку в V8 ([iojs/io.js#1079](https://github.com/iojs/io.js/pull/1079)) для продолжения работы.
-* Мы также хотели бы поблагодорить следующие компании за их вклад в технологии/поддержку/проектирование/оборудование для сборок io.js:
+* Вы можете спать спокойно, зная что io.js и последний node.js [**не подвержены**](https://strongloop.com/strongblog/are-node-and-io-js-affected-by-the-freak-attack-openssl-vulnerability/) [FREAK-атаке](https://freakattack.com/).  Вы ведь запускаете io.js или последнюю версию node.js, не так ли?
+* Walmart теперь спонсируют сборочную машину для системы io.js Jenkins CI.  Команда @iojs/build работает над созданием бинарных пакетов io.js для SunOS (подобно тем, которые вы можете получить на nodejs.org).  Необходимо внести правку в V8 ([iojs/io.js#1079](https://github.com/iojs/io.js/pull/1079)) для продолжения работы.
+* Мы также хотели бы поблагодарить следующие компании за их вклад в технологии/поддержку/проектирование/оборудование для сборок io.js:
   * **Digital Ocean** (Linux)
   * **Rackspace** (Windows)
   * **Voxer** (OS X и FreeBSD)
