@@ -25,7 +25,7 @@ io.js 1.5.1 и события сообщества.
 
 * [Tony Pujals] (https://twitter.com/subfuzion) показал презентацию плана развития io.js в [BayNode](http://www.meetup.com/BayNode/events/220246228/). Видео было опубликовано в [vimeo](https://vimeo.com/121707989) 9-го марта.
 * [Johan Bergström](https://github.com/jbergstroem) работает над патчем для [V8](https://codereview.chromium.org/990063002) на стороне io.js, чтобы вернуть поддержку Solaris в последнюю версию.
-* В [84-м эпизоде NodeUp](http://nodeup.com/eightyfour) вышла первая из серий, посвящённых текущему положению дел в io.js. Ведущими были [Mikeal Rogers](https://github.com/mikeal), [Trevor Norris](https://github.com/trevnorris) и [Bradley Meck](https://github.com/bmeck).
+* В [84-м эпизоде NodeUp](http://nodeup.com/eightyfour) вышел первый подкаст из серии, посвящённых текущему положению дел в io.js. Ведущими были [Mikeal Rogers](https://github.com/mikeal), [Trevor Norris](https://github.com/trevnorris) и [Bradley Meck](https://github.com/bmeck).
 * [Mikeal Rogers](https://github.com/mikeal) дал интервью для подкаста [Descriptive](http://descriptive.audio) в эпизоде под названием [У нас никогда не было так много активных контрибьютеров](http://descriptive.audio/episodes/12).
 * [Mark Wolfe](https://twitter.com/wolfeidau) [рассказал об io.js](https://twitter.com/wolfeidau/status/575785856545378304) на конференции [@melbjs](https://twitter.com/melbjs), слайды опубликованы [тут](https://speakerdeck.com/wolfeidau/iojs-bringing-es6-to-the-node).
 * [dockeri.co](http://dockeri.co/) теперь работает на io.js. Вы можете посмотреть объявление [тут](https://twitter.com/wjblankenship/status/575867637680369665).
