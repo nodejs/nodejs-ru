@@ -328,7 +328,7 @@ Cluster поддерживает два способа распределени�
 
     cluster.on('exit', function(worker, code, signal) {
       if (worker.suicide === true) {
-        console.log('Не виноватая я, он сам завершился!').
+        console.log('Я устал, я ухожу...').
       }
     });
     
@@ -412,7 +412,7 @@ Cluster поддерживает два способа распределени�
     
       process.on('message', function(msg) {
         if(msg === 'shutdown') {
-          // initiate graceful close of any connections to server
+          // Аккуратно завершаем все подключения к данному серверу
         }
       });
     }
@@ -441,20 +441,20 @@ Cluster поддерживает два способа распределени�
     
     if (cluster.isMaster) {
     
-      // Keep track of http requests
+      // Отображаем количество подключений
       var numReqs = 0;
       setInterval(function() {
-        console.log("numReqs =", numReqs);
+        console.log("Кол-ов подключений =", numReqs);
       }, 1000);
     
-      // Count requestes
+      // Считаем подключения
       function messageHandler(msg) {
         if (msg.cmd && msg.cmd == 'notifyRequest') {
           numReqs += 1;
         }
       }
     
-      // Start workers and listen for messages containing notifyRequest
+      // Запустим рабочие процессы, и будем ожидать сообщения содержащие notifyRequest
       var numCPUs = require('os').cpus().length;
       for (var i = 0; i < numCPUs; i++) {
         cluster.fork();
@@ -466,12 +466,12 @@ Cluster поддерживает два способа распределени�
     
     } else {
     
-      // Worker processes have a http server.
+      // Раочие процессы запускают http-сервер
       http.Server(function(req, res) {
         res.writeHead(200);
         res.end("hello world\n");
     
-        // notify master about the request
+        // Известим мастер-процесс о новом подключении
         process.send({ cmd: 'notifyRequest' });
       }).listen(8000);
     }
@@ -482,7 +482,7 @@ Cluster поддерживает два способа распределени�
 Аналогично `cluster.on('online')`, но для данного конкретного рабочего процесса.
 
     cluster.fork().on('online', function() {
-      // Worker is online
+      // Рабочй процесс запущен
     });
     
 
@@ -495,7 +495,7 @@ Cluster поддерживает два способа распределени�
 Аналогично `cluster.on('listening')`, но для данного конкретного рабочего процесса.
 
     cluster.fork().on('listening', function(address) {
-      // Worker is listening
+      // Рабочий процесс прослущивает порт
     });
     
 
@@ -520,11 +520,11 @@ Cluster поддерживает два способа распределени�
     var worker = cluster.fork();
     worker.on('exit', function(code, signal) {
       if( signal ) {
-        console.log("worker was killed by signal: "+signal);
+        console.log("Рабочий процесс завершен сигналом: "+signal);
       } else if( code !== 0 ) {
-        console.log("worker exited with error code: "+code);
+        console.log("Рабочий процесс завершен. Код ошибки: "+code);
       } else {
-        console.log("worker success!");
+        console.log("Рабочий процесс завершился без ошибок!");
       }
     });
     
