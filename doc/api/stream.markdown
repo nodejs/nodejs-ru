@@ -12,15 +12,16 @@ Stream это абстрактный интерфейс реализованны
 Этот модуль обеспечивает [Readable][], [Writable][],
 [Duplex][] и [Transform][] streams классы.
 
-Этот документ разделен на 3 части. Первая объясняет API streams
+Этот документ разделен на 3 части.
+**Первая** объясняет API streams
 для тех, кто будет просто использовать их в своей программе.
 Если вы никогда не будете реализовывать Stream API,
 вы можете остановиться здесь.
 
-Вторая часть исчерпывающе объясняет части API Streams необходимые
+**Вторая** часть исчерпывающе объясняет части API Streams необходимые
 для реализации ваших собственных классов Stream.
 
-Третья часть даёт более углубленное объяснение того, как работают streams,
+**Третья** часть даёт более углубленное объяснение того, как работают streams,
 включая некоторые внутренние механизмы и функции,
 которые, возможно, не должны быть модифицированы до того
 как вы не поймете, как они работают.
@@ -58,12 +59,12 @@ var server = http.createServer(function (req, res) {
   // res это http.ServerResponse,  реализованный Writable Stream
 
   var body = '';
-  // мы будем получать данные как utf8 strings
+  // Мы будем получать данные как utf8 strings
   // Если не установить нужную кодировку, по умолчанию мы получим Buffer objects
   req.setEncoding('utf8');
 
   // Readable streams генерируют события 'data'
-  // Просто добавляем listener (callback) события
+  // Просто добавляем к нему listener (callback)
   req.on('data', function (chunk) {
     body += chunk;
   });
@@ -105,40 +106,49 @@ The Readable stream interface is the abstraction for a *source* of
 data that you are reading from.  In other words, data comes *out* of a
 Readable stream.
 
-A Readable stream will not start emitting data until you indicate that
-you are ready to receive it.
+Readable stream интерфейс это просто абстракция для вашего некоего
+*источника* данных, которые вы хотите получить.
+Другими словами - данные *приходят* из Readable stream.
 
-Readable streams have two "modes": a **flowing mode** and a **paused
-mode**.  When in flowing mode, data is read from the underlying system
-and provided to your program as fast as possible.  In paused mode, you
-must explicitly call `stream.read()` to get chunks of data out.
-Streams start out in paused mode.
+Он не будет выдавать данных, до тех пор пока
+вы не будете готовы получать их.
 
-**Note**: If no data event handlers are attached, and there are no
-[`pipe()`][] destinations, and the stream is switched into flowing
-mode, then data will be lost.
+У Readable streams есть два режима:
+1. **flowing mode**
+2. **paused mode**
+В режиме **flowing mode** - данные читаются непосредственно
+(и быстро -насколько это возможно) из специальной underlying системы
+(приватного метода,именованного с "_" -прим. переводчика).
 
-You can switch to flowing mode by doing any of the following:
+В режиме **paused mode** - данные, по умолчанию - в виде chunk (кусок),
+должны быть получены явным вызовом `stream.read()`.
 
-* Adding a [`'data'` event][] handler to listen for data.
-* Calling the [`resume()`][] method to explicitly open the flow.
-* Calling the [`pipe()`][] method to send the data to a [Writable][].
+**Отметьте**: если у события 'data' не был установлен
+listener (callback-обработчик), а у вызова [`pipe()`][] не указан получатель
+и stream находится в режиме **flowing mode** - данные будут утеряны.
 
-You can switch back to paused mode by doing either of the following:
 
-* If there are no pipe destinations, by calling the [`pause()`][]
-  method.
-* If there are pipe destinations, by removing any [`'data'` event][]
-  handlers, and removing all pipe destinations by calling the
-  [`unpipe()`][] method.
+В **flowing mode** можно переключиться с помощью:
 
-Note that, for backwards compatibility reasons, removing `'data'`
-event handlers will **not** automatically pause the stream.  Also, if
-there are piped destinations, then calling `pause()` will not
-guarantee that the stream will *remain* paused once those
-destinations drain and ask for more data.
+* Добавлением к  [`'data'` событию][] обработчика данных.
+* Вызовом метода [`resume()`][] для явного открытия потока данных.
+* Вызовом метода [`pipe()`][] с указанием получателя [Writable][],
+для отправки ему данных.
 
-Examples of readable streams include:
+Переключиться обратно, в **paused mode**, можно путём:
+
+* Если получатель не был указан (в методе .pipe) - вызовом [`pause()`][]
+* Если получатель(-ли) был указан - удалением обработчика [`'data'` события][]
+  и удалением всех pipe получателей через [`unpipe()`][] метод.
+
+**Имейте также ввиду**: в целях обратной совместимости, удаление
+всех `'data'` событий **не** будет автоматически приостанавливать
+(pause) stream. Также, если были указаны piped-получатели,
+и затем вызван `pause()`, stream не будет гарантировать
+что поток передачи данных будет приостановленен, в момент,
+когда все piped-получатели получат данные и запросят их остатки.
+
+Вот примеры Readable streams:
 
 * [http responses, on the client](http.html#http_http_incomingmessage)
 * [http requests, on the server](http.html#http_http_incomingmessage)
@@ -149,24 +159,29 @@ Examples of readable streams include:
 * [child process stdout and stderr][]
 * [process.stdin][]
 
-#### Event: 'readable'
+#### Событие: 'readable'
 
-When a chunk of data can be read from the stream, it will emit a
-`'readable'` event.
+Когда кусок (chunk) данных может быть прочитан stream,
+он будет генерировать `'readable'` событие.
 
 In some cases, listening for a `'readable'` event will cause some data
 to be read into the internal buffer from the underlying system, if it
 hadn't already.
 
+В некоторых случаях, прослушка `'readable'` события,
+будет вызывать считывание данных во внутренний (underlying system)
+*буффер*, если это не сделано ранее.
+
 ```javascript
 var readable = getReadableStreamSomehow();
 readable.on('readable', function() {
-  // there is some data to read now
+  // Здесь данные для чтения в момент
+  // вызова обработчика события 'readable'
 });
 ```
-
-Once the internal buffer is drained, a `readable` event will fire
-again when more data is available.
+Когда внутренний буффер будет освобожден (данные *вытекут* - drained),
+`readable` событие снова вызывет его обработчик
+сразу как будет доступна остальная часть данных.
 
 #### Event: 'data'
 
@@ -750,7 +765,7 @@ of stream class you are writing:
 </table>
 
 In your implementation code, it is very important to never call the
-methods described in [API for Stream Consumers][] above.  Otherwise, you
+methods described in [API для Пользователей Streams][] above.  Otherwise, you
 can potentially cause adverse side effects in programs that consume
 your streaming interfaces.
 
@@ -761,7 +776,7 @@ your streaming interfaces.
 `stream.Readable` is an abstract class designed to be extended with an
 underlying implementation of the [`_read(size)`][] method.
 
-Please see above under [API for Stream Consumers][] for how to consume
+Please see above under [API для Пользователей Streams][] for how to consume
 streams in your programs.  What follows is an explanation of how to
 implement Readable streams in your programs.
 
@@ -1019,7 +1034,7 @@ SourceWrapper.prototype._read = function(size) {
 `stream.Writable` is an abstract class designed to be extended with an
 underlying implementation of the [`_write(chunk, encoding, callback)`][] method.
 
-Please see above under [API for Stream Consumers][] for how to consume
+Please see above under [API для Пользователей Streams][] for how to consume
 writable streams in your programs.  What follows is an explanation of
 how to implement Writable streams in your programs.
 
@@ -1627,7 +1642,7 @@ JSONParseStream.prototype._flush = function(cb) {
 [process.stdout]: process.html#process_process_stdout
 [process.stderr]: process.html#process_process_stderr
 [child process stdout and stderr]: child_process.html#child_process_child_stdout
-[API for Stream Consumers]: #stream_api_for_stream_consumers
+[API для Пользователей Streams]: #stream_api_for_stream_consumers
 [API для реализации Stream]: #stream_api_for_stream_implementors
 [Readable]: #stream_class_stream_readable
 [Writable]: #stream_class_stream_writable
