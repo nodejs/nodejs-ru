@@ -1,83 +1,84 @@
 # Stream
 
-    Stability: 2 - Unstable
+    Стабильность: 2 - Стабильный
 
-A stream is an abstract interface implemented by various objects in
-io.js.  For example a [request to an HTTP
-server](http.html#http_http_incomingmessage) is a stream, as is
-[stdout][]. Streams are readable, writable, or both. All streams are
-instances of [EventEmitter][]
+Stream это абстрактный интерфейс реализованный разными объектами
+в io.js. Например [запрос к HTTP серверу](http.html#http_http_incomingmessage) - это stream,
+[stdout] - тоже stream. Streams могут быть Readable (читаемые), Writable (записываемые)
+или одновременно (Duplex и Transform).
+Все streams унаследованы от [EventEmitter][].
 
-You can load the Stream base classes by doing `require('stream')`.
-There are base classes provided for [Readable][] streams, [Writable][]
-streams, [Duplex][] streams, and [Transform][] streams.
+Вы можете подключить основные stream классы через `require('stream')`.
+Этот модуль обеспечивает [Readable][], [Writable][],
+[Duplex][] и [Transform][] streams классы.
 
-This document is split up into 3 sections.  The first explains the
-parts of the API that you need to be aware of to use streams in your
-programs.  If you never implement a streaming API yourself, you can
-stop there.
+Этот документ разделен на 3 части. Первая объясняет API streams
+для тех, кто будет просто использовать их в своей программе.
+Если вы никогда не будете реализовывать Stream API,
+вы можете остановиться здесь.
 
-The second section explains the parts of the API that you need to use
-if you implement your own custom streams yourself.  The API is
-designed to make this easy for you to do.
+Вторая часть исчерпывающе объясняет части API Streams необходимые
+для реализации ваших собственных классов Stream.
 
-The third section goes into more depth about how streams work,
-including some of the internal mechanisms and functions that you
-should probably not modify unless you definitely know what you are
-doing.
+Третья часть даёт более углубленное объяснение того, как работают streams,
+включая некоторые внутренние механизмы и функции,
+которые, возможно, не должны быть модифицированы до того
+как вы не поймете, как они работают.
 
-
-## API for Stream Consumers
+## API для Пользователей Streams
 
 <!--type=misc-->
 
-Streams can be either [Readable][], [Writable][], or both ([Duplex][]).
+Streams могуть быть либо [Readable][], либо [Writable][],
+либо одновременно ([Duplex][],[Transform][]).
 
-All streams are EventEmitters, but they also have other custom methods
-and properties depending on whether they are Readable, Writable, or
-Duplex.
+Все streams унаследованы от EventEmitters, и имеют свои
+специальные методы и свойства зависящие от их вида:
+Readable, Writable, или Duplex.
 
-If a stream is both Readable and Writable, then it implements all of
-the methods and events below.  So, a [Duplex][] or [Transform][] stream is
-fully described by this API, though their implementation may be
-somewhat different.
+Если stream одновременно Readable и Writable, значит он реализует все их методы и
+события которые описаны ниже. Так что [Duplex][]
+и [Transform][] подробно описаны этим API,
+хотя их реализация может несколько отличаться.
 
-It is not necessary to implement Stream interfaces in order to consume
-streams in your programs.  If you **are** implementing streaming
-interfaces in your own program, please also refer to
-[API for Stream Implementors][] below.
+Если вы желаете создать свои особенные
+streaming интерфейсы, знать это совсем не обязательно.
+Более подробно читайте часть [API для реализации Stream][],
+что расположена ниже.
 
-Almost all io.js programs, no matter how simple, use Streams in some
-way.  Here is an example of using Streams in an io.js program:
+Почти все io.js программы, так или иначе,
+используют Streams в разных целях.
+Вот к примеру простая io.js программа, использующая Streams:
 
 ```javascript
 var http = require('http');
 
 var server = http.createServer(function (req, res) {
-  // req is an http.IncomingMessage, which is a Readable Stream
-  // res is an http.ServerResponse, which is a Writable Stream
+  // req это http.IncomingMessage, реализованный Readable Stream
+  // res это http.ServerResponse,  реализованный Writable Stream
 
   var body = '';
-  // we want to get the data as utf8 strings
-  // If you don't set an encoding, then you'll get Buffer objects
+  // мы будем получать данные как utf8 strings
+  // Если не установить нужную кодировку, по умолчанию мы получим Buffer objects
   req.setEncoding('utf8');
 
-  // Readable streams emit 'data' events once a listener is added
+  // Readable streams генерируют события 'data'
+  // Просто добавляем listener (callback) события
   req.on('data', function (chunk) {
     body += chunk;
   });
 
-  // the end event tells you that you have entire body
+  // Событие 'end', говорит нам, что запись данных в body зверешена
   req.on('end', function () {
     try {
       var data = JSON.parse(body);
     } catch (er) {
-      // uh oh!  bad json!
+      // Ой-ой, плохой Json!
       res.statusCode = 400;
       return res.end('error: ' + er.message);
     }
 
-    // write back something interesting to the user:
+    // Напишем что-нибудь интересное в ответ пользователю
     res.write(typeof data);
     res.end();
   });
@@ -85,6 +86,9 @@ var server = http.createServer(function (req, res) {
 
 server.listen(1337);
 
+// Здесь отправляем запросы к нашей программе
+// с помощью curl.
+// Атрибут - d означает DATA. - примеч. переводчика.
 // $ curl localhost:1337 -d '{}'
 // object
 // $ curl localhost:1337 -d '"foo"'
@@ -670,7 +674,7 @@ Examples of Transform streams include:
 * [crypto streams][]
 
 
-## API for Stream Implementors
+## API для реализации Stream
 
 <!--type=misc-->
 
@@ -1624,7 +1628,7 @@ JSONParseStream.prototype._flush = function(cb) {
 [process.stderr]: process.html#process_process_stderr
 [child process stdout and stderr]: child_process.html#child_process_child_stdout
 [API for Stream Consumers]: #stream_api_for_stream_consumers
-[API for Stream Implementors]: #stream_api_for_stream_implementors
+[API для реализации Stream]: #stream_api_for_stream_implementors
 [Readable]: #stream_class_stream_readable
 [Writable]: #stream_class_stream_writable
 [Duplex]: #stream_class_stream_duplex
