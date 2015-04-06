@@ -508,10 +508,10 @@ myReader.on('readable', function() {
 
 <!--type=class-->
 
-The Writable stream interface is an abstraction for a *destination*
-that you are writing data *to*.
+Writable stream интерфейс это просто абстракция для вашего для
+вашего *получателя*, который *принимать* данные.
 
-Examples of writable streams include:
+Примеры writable streams включают:
 
 * [http requests, on the client](http.html#http_class_http_clientrequest)
 * [http responses, on the server](http.html#http_class_http_serverresponse)
@@ -524,32 +524,32 @@ Examples of writable streams include:
 
 #### writable.write(chunk[, encoding][, callback])
 
-* `chunk` {String | Buffer} The data to write
-* `encoding` {String} The encoding, if `chunk` is a String
-* `callback` {Function} Callback for when this chunk of data is flushed
-* Returns: {Boolean} True if the data was handled completely.
+* `chunk` {String | Buffer} Данные для записи.
+* `encoding` {String} Кодировка, если `chunk` это String.
+* `callback` {Function} Callback для вызова в момент сброса кусков (chunks) данных.
+* Returns: {Boolean} True - если данные полностью обработаны.
 
-This method writes some data to the underlying system, and calls the
-supplied callback once the data has been fully handled.
+Метод записывает некоторые данные в underlying систему,
+и вызывает, один раз, указанный callback, когда
+данные будут полностью обработаны.
 
-The return value indicates if you should continue writing right now.
-If the data had to be buffered internally, then it will return
-`false`.  Otherwise, it will return `true`.
+Возвращаемое значение предупреждает, что вы должны продолжить
+запись прямо сейчас. Если данные были буфферизированны, то
+метод вернет `false`. В остальных случаях - `true`.
 
-This return value is strictly advisory.  You MAY continue to write,
-even if it returns `false`.  However, writes will be buffered in
-memory, so it is best not to do this excessively.  Instead, wait for
-the `drain` event before writing more data.
+Это событие строго рекомендательное. Вы возможно продолжите
+запись данных, даже если будет возвращено `false`, хотя
+это будет излишне, несмотря на то, что данные также будут отправлены в буффер,
+лучше выждите событие `drain` и продолжайте запись.
 
-#### Event: 'drain'
+#### Событие: 'drain'
 
-If a [`writable.write(chunk)`][] call returns false, then the `drain`
-event will indicate when it is appropriate to begin writing more data
-to the stream.
+Если вызов [`writable.write(chunk)`][] возвращает false, тогда событие `drain`
+будет сообщать когда удобно начать новую запись данных в stream.
 
 ```javascript
-// Write the data to the supplied writable stream 1MM times.
-// Be attentive to back-pressure.
+// Запись данных 1MM раз в указанный writable stream.
+// Будьте внимательны к обратной реакции.
 function writeOneMillionTimes(writer, data, encoding, callback) {
   var i = 1000000;
   write();
@@ -558,17 +558,17 @@ function writeOneMillionTimes(writer, data, encoding, callback) {
     do {
       i -= 1;
       if (i === 0) {
-        // last time!
+        // Последний момент!
         writer.write(data, encoding, callback);
       } else {
-        // see if we should continue, or wait
-        // don't pass the callback, because we're not done yet.
+        // смотрим, должны ли мы выждать или продолжить
+        // не передаем callback, т.к. мы еще не закончили.
         ok = writer.write(data, encoding);
       }
     } while (i > 0 && ok);
     if (i > 0) {
-      // had to stop early!
-      // write some more once it drains
+      // остновимся раньше!
+      // и запишем еще немного данных
       writer.once('drain', write);
     }
   }
@@ -577,43 +577,44 @@ function writeOneMillionTimes(writer, data, encoding, callback) {
 
 #### writable.cork()
 
-Forces buffering of all writes.
+Заставляет буфферизировать все данные при записи в stream.
 
-Buffered data will be flushed either at `.uncork()` or at `.end()` call.
+Данные в буфере могут быть *"удалены"*
+по вызову `.uncork()` или `.end()`.
 
 #### writable.uncork()
 
-Flush all data, buffered since `.cork()` call.
+*"Удаляет"* данные из буффера, с момента последнего вызова`.cork()`.
 
 #### writable.setDefaultEncoding(encoding)
 
-* `encoding` {String} The new default encoding
+* `encoding` {String} Новая кодировка по умолчанию.
 
-Sets the default encoding for a writable stream.
+Устанавливает кодировку по умолчанию.
 
 #### writable.end([chunk][, encoding][, callback])
 
-* `chunk` {String | Buffer} Optional data to write
-* `encoding` {String} The encoding, if `chunk` is a String
-* `callback` {Function} Optional callback for when the stream is finished
+* `chunk` {String | Buffer} Опцианально - данные для записи.
+* `encoding` {String} Кодировка, если `chunk` будет в виде string.
+* `callback` {Function} Опциально - Вызывается по окончании работы stream.
 
-Call this method when no more data will be written to the stream.  If
-supplied, the callback is attached as a listener on the `finish` event.
+Вызывайте этот этот метод, по окончании передачи данных в этот
+stream. Если callback был указан, он станет обработчиом события `finish`.
 
-Calling [`write()`][] after calling [`end()`][] will raise an error.
+Вызов [`write()`][]  после вызова метода [`end()`][] вызовет ошибку.
 
 ```javascript
-// write 'hello, ' and then end with 'world!'
+// напишем 'hello, ' а затем, в конце, 'world!'
 var file = fs.createWriteStream('example.txt');
 file.write('hello, ');
 file.end('world!');
-// writing more now is not allowed!
+// Запись данных больше не доступна!
 ```
 
-#### Event: 'finish'
+#### Событие: 'finish'
 
-When the [`end()`][] method has been called, and all data has been flushed
-to the underlying system, this event is emitted.
+Когда вызван [`end()`][], и данные были отосланы в underlying систему,
+stream посылает это событие.
 
 ```javascript
 var writer = getWritableStreamSomehow();
@@ -622,50 +623,52 @@ for (var i = 0; i < 100; i ++) {
 }
 writer.end('this is the end\n');
 writer.on('finish', function() {
-  console.error('all writes are now complete.');
+  console.error('Запись данных окончена.');
 });
 ```
 
-#### Event: 'pipe'
+#### Событие: 'pipe'
 
-* `src` {[Readable][] Stream} source stream that is piping to this writable
+* `src` {[Readable][] Stream} Stream-источник, которые передает данные в текущий stream.
 
-This is emitted whenever the `pipe()` method is called on a readable
-stream, adding this writable to its set of destinations.
+Это событие посылается каждый раз, когда вызывается метод `pipe()`
+у Readable stream.
 
 ```javascript
 var writer = getWritableStreamSomehow();
 var reader = getReadableStreamSomehow();
 writer.on('pipe', function(src) {
-  console.error('something is piping into the writer');
+  console.error('что-то передаём во writer');
   assert.equal(src, reader);
 });
 reader.pipe(writer);
 ```
 
-#### Event: 'unpipe'
+#### Событие: 'unpipe'
 
-* `src` {[Readable][] Stream} The source stream that [unpiped][] this writable
+* `src` {[Readable][] Stream} Stream-источник, что [unpiped][] (отменил передачу данных) в текущий stream.
 
-This is emitted whenever the [`unpipe()`][] method is called on a
-readable stream, removing this writable from its set of destinations.
+Это событие посылается каждый раз, когда метод [`unpipe()`][] будет вызван
+у источника (реализующего Readable методы),
+удаляющего текущий stream из набора получателей.
 
 ```javascript
 var writer = getWritableStreamSomehow();
 var reader = getReadableStreamSomehow();
 writer.on('unpipe', function(src) {
-  console.error('something has stopped piping into the writer');
+  console.error('почему-то передача данных в writer остановлена');
   assert.equal(src, reader);
 });
 reader.pipe(writer);
 reader.unpipe(writer);
 ```
 
-#### Event: 'error'
+#### Событие: 'error'
 
 * {Error object}
 
-Emitted if there was an error when writing or piping data.
+Событие посылается, если во время записи или передачи данных
+произошла ошибка.
 
 ### Class: stream.Duplex
 
