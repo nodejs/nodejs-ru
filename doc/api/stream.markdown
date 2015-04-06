@@ -12,17 +12,17 @@ Stream это абстрактный интерфейс реализованны
 Этот модуль обеспечивает [Readable][], [Writable][],
 [Duplex][] и [Transform][] streams классы.
 
-Этот документ разделен на 3 части.
+Далее документ разделен на 3 части.
 
 **Первая** объясняет API streams
 для тех, кто будет просто использовать их в своей программе.
 Если вы никогда не будете реализовывать Stream API,
 вы можете остановиться здесь.
 
-**Вторая** часть исчерпывающе объясняет части API Streams необходимые
+**Вторая часть** исчерпывающе объясняет элементы API Streams необходимые
 для реализации ваших собственных классов Stream.
 
-**Третья** часть даёт более углубленное объяснение того, как работают streams,
+**Третья часть** даёт более углубленное объяснение того, как работают streams,
 включая некоторые внутренние механизмы и функции,
 которые, возможно, не должны быть модифицированы до того
 как вы не поймете, как они работают.
@@ -44,7 +44,7 @@ Readable, Writable, или Duplex.
 хотя их реализация может несколько отличаться.
 
 Если вы желаете создать свои особенные
-streaming интерфейсы, знать это не обязательно.
+streaming интерфейсы, знать это не столь важно.
 Более подробно читайте часть [API для реализации Stream][],
 что расположена ниже.
 
@@ -63,8 +63,8 @@ var server = http.createServer(function (req, res) {
   // Если не установить нужную кодировку, по умолчанию мы получим объекты класса Buffer
   req.setEncoding('utf8');
 
-  // Readable streams посылает события 'data'
-  // Просто добавляем к нему обработчик (listener-callback)
+  // Readable streams будет посылать событие 'data'
+  // при их получении. Просто добавляем к нему обработчик.
   req.on('data', function (chunk) {
     body += chunk;
   });
@@ -122,7 +122,7 @@ Readable stream интерфейс это просто абстракция дл
 В режиме **paused mode** - данные, по умолчанию - в виде кусков (chunk),
 должны быть получены явным вызовом `stream.read()`.
 
-**Отметьте**: если у события 'data' не был установлен
+**Будьте внимательны**: если у события 'data' не был установлен
 обработчик, а у вызова [`pipe()`][] не указан получатель
 и stream находится в режиме **flowing mode** - данные будут утеряны.
 
@@ -234,14 +234,15 @@ streams будут посылать это событие.
 Метод `read()` возвращает данные из внутреннего буффера.
 Если данные не доступны - null.
 
-`size` указывает методу количество возвращаемых байтов.
+Здесь `size` указывает методу количество возвращаемых байтов.
+
 Если `size` недоступен - возвращает null.
 
 Если `size` не указан, метод вернет все данные из буффера.
 
 Этот метод должен вызываться только в `paused mode`.
-В `flowing mode` этот метод вызывается автоматически, до
-опустошения внутреннего буффера.
+В `flowing mode` этот метод вызывается автоматически,
+вплоть до опустошения внутреннего буффера.
 
 ```javascript
 var readable = getReadableStreamSomehow();
@@ -253,7 +254,7 @@ readable.on('readable', function() {
 });
 ```
 
-Если метод возвращает данные, то stream посылает событие [`'data'`][].
+При каждом вызове метода, stream посылает событие [`'data'`][].
 
 #### readable.setEncoding(encoding)
 
@@ -266,7 +267,7 @@ readable.on('readable', function() {
 Например: `readable.setEncoding('utf8')` - будет выдавать
 данные в виде UTF-8 strings.
 
-Или:`readable.setEncoding('hex')`; - данные будут представлены в hexadecimal
+Или:`readable.setEncoding('hex')` - данные будут представлены в hexadecimal
 string формате.
 
 Этот метод правильно обрабатывает multi-byte символы,
@@ -288,14 +289,13 @@ readable.on('data', function(chunk) {
 
 * Return: `this`
 
-Метод позволяет readable stream продолжить выдачу данных.
-посылая события `data`.
+Метод позволяет readable stream продолжить посылку события `data`.
 
-Метод будет переключать stream в flowing mode.
+Метод переключает stream в flowing mode.
 Если вы не хотите получать данные из stream, но вы
 вы хотите полность окончить приём и послать событие `end`,
 вы можете вызвать [`readable.resume()`][] для продолжения
-выдачи данных. (используется в pause mode - прим. переводчика).
+выдачи данных.
 
 ```javascript
 var readable = getReadableStreamSomehow();
@@ -309,18 +309,18 @@ readable.on('end', function(chunk) {
 
 * Return: `this`
 
-This method will cause a stream in flowing mode to stop emitting
-`data` events, switching out of flowing mode.  Any data that becomes
-available will remain in the internal buffer.
+Метод приостанавливает выдачу данных и посылку
+`data` события, переключая stream из `flowing mode` в `pause mode`.
+Оставшиеся доступные данные остаются во внутреннем буфере.
 
 ```javascript
 var readable = getReadableStreamSomehow();
 readable.on('data', function(chunk) {
-  console.log('got %d bytes of data', chunk.length);
+  console.log('получено %d байт данных', chunk.length);
   readable.pause();
-  console.log('there will be no more data for 1 second');
+  console.log('остальные данные, на одну секунду, будут недоступны');
   setTimeout(function() {
-    console.log('now data will start flowing again');
+    console.log('теперь поток данных открыт');
     readable.resume();
   }, 1000);
 });
@@ -330,9 +330,9 @@ readable.on('data', function(chunk) {
 
 * Return: `Boolean`
 
-This method returns whether or not the `readable` has been **explicitly**
-paused by client code (using `readable.pause()` without a corresponding
-`readable.resume()`).
+Метод сообщит приостановлен ли `readable` stream явно
+клиентским кодом (с использованием `readable.pause()`
+без `readable.resume()`).
 
 ```javascript
 var readable = new stream.Readable
@@ -346,25 +346,26 @@ readable.isPaused() // === false
 
 #### readable.pipe(destination[, options])
 
-* `destination` {[Writable][] Stream} The destination for writing data
-* `options` {Object} Pipe options
-  * `end` {Boolean} End the writer when the reader ends. Default = `true`
+* `destination` {[Writable][] Stream} Получатель данных.
+* `options` {Object} Опции передачи данных (piping).
+  * `end` {Boolean} Послать событие 'end' получателю, когда считывание данных будет окончено. По умолчанию = `true`
 
-This method pulls all the data out of a readable stream, and writes it
-to the supplied destination, automatically managing the flow so that
-the destination is not overwhelmed by a fast readable stream.
+Метод вытягивает данные из readable stream и
+записывает их в получателя, автоматически управляя потоком
+передачи, дабы получатель не был перегружен быстрым
+readable stream.
 
-Multiple destinations can be piped to safely.
 
 ```javascript
 var readable = getReadableStreamSomehow();
 var writable = fs.createWriteStream('file.txt');
-// All the data from readable goes into 'file.txt'
+// Все данные из readable пойдут в 'file.txt'
 readable.pipe(writable);
 ```
+Доступен безопасный *слив* данных в множество получателей.
 
-This function returns the destination stream, so you can set up pipe
-chains like so:
+Функция просто вернет получателя, что позволяет
+создавать цепочки вызовов:
 
 ```javascript
 var r = fs.createReadStream('file.txt');
@@ -372,19 +373,23 @@ var z = zlib.createGzip();
 var w = fs.createWriteStream('file.txt.gz');
 r.pipe(z).pipe(w);
 ```
+(Это доступно благодаря комбинированным
+streams - transform и duplex, о них ниже
+- примеч. переводчика).
 
-For example, emulating the Unix `cat` command:
+Например, эмулируем Unix `cat` комманду:
 
 ```javascript
 process.stdin.pipe(process.stdout);
 ```
 
-By default [`end()`][] is called on the destination when the source stream
-emits `end`, so that `destination` is no longer writable. Pass `{ end:
-false }` as `options` to keep the destination stream open.
+По умолчанию [`end()`][] вызывается на получателе, когда
+stream-источник посылает `end` событие, так что
+`получатель` становится больше не writable. Передача `{ end: false }`
+как `параметр` в этот метод, сохраняет stream-получателя открытым (writable).
 
-This keeps `writer` open so that "Goodbye" can be written at the
-end.
+Это позволяет *попрощаться* с получателем (writable stream)
+в нужный момент:
 
 ```javascript
 reader.pipe(writer, { end: false });
@@ -393,51 +398,53 @@ reader.on('end', function() {
 });
 ```
 
-Note that `process.stderr` and `process.stdout` are never closed until
-the process exits, regardless of the specified options.
+Имейте ввиду, `process.stderr` и `process.stdout`
+не будут закрыты, до тех пор, пока процесс существует,
+независимо от указанных параметров.
 
 #### readable.unpipe([destination])
 
-* `destination` {[Writable][] Stream} Optional specific stream to unpipe
+* `destination` {[Writable][] Stream} Для указания получателя, опционально.
 
-This method will remove the hooks set up for a previous `pipe()` call.
+Метод удаляет хуки установленные для предыдущенго вызова `pipe()`.
 
-If the destination is not specified, then all pipes are removed.
+Если получатель не указан, будуте удалены все остальные,
+ранее указанные.
 
-If the destination is specified, but no pipe is set up for it, then
-this is a no-op.
+Если получатель указан, но передача (*слив* ) данных в процессе
+- метод ничего не сделает.
 
 ```javascript
 var readable = getReadableStreamSomehow();
 var writable = fs.createWriteStream('file.txt');
-// All the data from readable goes into 'file.txt',
-// but only for the first second
+// Все данные из readable источника переходят в 'file.txt',
+// но только в первую секунду
 readable.pipe(writable);
 setTimeout(function() {
-  console.log('stop writing to file.txt');
+  console.log('остановить запись file.txt');
   readable.unpipe(writable);
-  console.log('manually close the file stream');
+  console.log('закроем file stream в ручную');
   writable.end();
 }, 1000);
 ```
 
 #### readable.unshift(chunk)
 
-* `chunk` {Buffer | String} Chunk of data to unshift onto the read queue
+* `chunk` {Buffer | String} Кусок данных для извлечения из очереди чтения.
 
-This is useful in certain cases where a stream is being consumed by a
-parser, which needs to "un-consume" some data that it has
-optimistically pulled out of the source, so that the stream can be
-passed on to some other party.
+Это полезно в определенных случаях, когда stream был
+использован парсером, которые нуждался временно *не использовать* выдачу
+данных из очередни, которые он (парсер) получал, так, что бы
+stream мог передать их другой партией.
 
-If you find that you must often call `stream.unshift(chunk)` in your
-programs, consider implementing a [Transform][] stream instead.  (See API
-for Stream Implementors, below.)
+Если вы очень часто вызываете этот метод,
+рассмотрите реализацию [Transform][] stream.
+(см. ниже по статье).
 
 ```javascript
-// Pull off a header delimited by \n\n
-// use unshift() if we get too much
-// Call the callback with (error, header, stream)
+// Вытащим header отделенный \n\n
+// используя unshift() если получим их слишком много
+// Вызовем callback с (error, header, stream)
 var StringDecoder = require('string_decoder').StringDecoder;
 function parseHeader(stream, callback) {
   stream.on('error', callback);
@@ -449,7 +456,7 @@ function parseHeader(stream, callback) {
     while (null !== (chunk = stream.read())) {
       var str = decoder.write(chunk);
       if (str.match(/\n\n/)) {
-        // found the header boundary
+        // Нашли границу header
         var split = str.split(/\n\n/);
         header += split.shift();
         var remaining = split.join('\n\n');
@@ -458,10 +465,10 @@ function parseHeader(stream, callback) {
           stream.unshift(buf);
         stream.removeListener('error', callback);
         stream.removeListener('readable', onReadable);
-        // now the body of the message can be read from the stream.
+        // Теперь тело сообщения может быть прочитано из stream
         callback(null, header, stream);
       } else {
-        // still reading the header.
+        // Все ещё читаем header.
         header += str;
       }
     }
@@ -471,21 +478,19 @@ function parseHeader(stream, callback) {
 
 #### readable.wrap(stream)
 
-* `stream` {Stream} An "old style" readable stream
+* `stream` {Stream} В старом стиле readable streams.
 
-Versions of Node.js prior to v0.10 had streams that did not implement the
-entire Streams API as it is today.  (See "Compatibility" below for
-more information.)
+До версии  v0.10, API streams не были полноценно реализованы,
+(подробно, см. о обратной "Совместимости" ниже), потому,
+если вы использовали старую библиотеку io.js, которая
+посылает `'data'` события, и имеет рекомендальный метод [`pause()`][], тогда
+вы можете "обернуть" методом `wrap()` для создания [Readable][] stream, которые использует
+старые stream с их источниками.
 
-If you are using an older io.js library that emits `'data'` events and
-has a [`pause()`][] method that is advisory only, then you can use the
-`wrap()` method to create a [Readable][] stream that uses the old stream
-as its data source.
+Вы будете редко вызывать эту функцию, т.к. она удобна только
+в случае взаимодействия со старыми io.js библиотеками и программами.
 
-You will very rarely ever need to call this function, but it exists
-as a convenience for interacting with old io.js programs and libraries.
-
-For example:
+Например:
 
 ```javascript
 var OldReader = require('./old-api-module.js').OldReader;
