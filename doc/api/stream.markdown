@@ -165,7 +165,7 @@ Readable stream интерфейс это просто абстракция дл
 
 В некоторых случаях, прослушка `'readable'` события,
 будет вызывать считывание данных во внутренний
-*буффер* из  underlying системы, если это не сделано ранее.
+*буфер* из  underlying системы, если это не сделано ранее.
 
 ```javascript
 var readable = getReadableStreamSomehow();
@@ -231,18 +231,18 @@ streams будут посылать это событие.
 * `size` {Number}  Опциональный аргумент, для указания количества данных для считывания.
 * Return {String | Buffer | null}
 
-Метод `read()` возвращает данные из внутреннего буффера.
+Метод `read()` возвращает данные из внутреннего буфера.
 Если данные не доступны - null.
 
 Здесь `size` указывает методу количество возвращаемых байтов.
 
 Если `size` недоступен - возвращает null.
 
-Если `size` не указан, метод вернет все данные из буффера.
+Если `size` не указан, метод вернет все данные из буфера.
 
 Этот метод должен вызываться только в `paused mode`.
 В `flowing mode` этот метод вызывается автоматически,
-вплоть до опустошения внутреннего буффера.
+вплоть до опустошения внутреннего буфера.
 
 ```javascript
 var readable = getReadableStreamSomehow();
@@ -272,7 +272,7 @@ string формате.
 
 Этот метод правильно обрабатывает multi-byte символы,
 что бы предотвратить порчу данных, возникающую при
-извлечение данных напрямую из внутреннего буффера
+извлечение данных напрямую из внутреннего буфера
 и вызове на них `buf.toString(encoding)`.
 Если вы хотите читать данные как strings, всегда используйте этот метод.
 
@@ -534,12 +534,12 @@ Writable stream интерфейс это просто абстракция дл
 данные будут полностью обработаны.
 
 Возвращаемое значение предупреждает, что вы должны продолжить
-запись прямо сейчас. Если данные были буфферизированны, то
+запись прямо сейчас. Если данные были буферизированны, то
 метод вернет `false`. В остальных случаях - `true`.
 
 Это событие строго рекомендательное. Вы возможно продолжите
 запись данных, даже если будет возвращено `false`, хотя
-это будет излишне, несмотря на то, что данные также будут отправлены в буффер,
+это будет излишне, несмотря на то, что данные также будут отправлены в буфер,
 лучше выждите событие `drain` и продолжайте запись.
 
 #### Событие: 'drain'
@@ -577,14 +577,14 @@ function writeOneMillionTimes(writer, data, encoding, callback) {
 
 #### writable.cork()
 
-Заставляет буфферизировать все данные при записи в stream.
+Заставляет буферизировать все данные при записи в stream.
 
 Данные в буфере могут быть *"удалены"*
 по вызову `.uncork()` или `.end()`.
 
 #### writable.uncork()
 
-*"Удаляет"* данные из буффера, с момента последнего вызова`.cork()`.
+*"Удаляет"* данные из буфера, с момента последнего вызова`.cork()`.
 
 #### writable.setDefaultEncoding(encoding)
 
@@ -596,7 +596,7 @@ function writeOneMillionTimes(writer, data, encoding, callback) {
 
 * `chunk` {String | Buffer} Опцианально - данные для записи.
 * `encoding` {String} Кодировка, если `chunk` будет в виде string.
-* `callback` {Function} Опциально - Вызывается по окончании работы stream.
+* `callback` {Function} Опциально - Автоматически вызывается по окончании работы stream.
 
 Вызывайте этот этот метод, по окончании передачи данных в этот
 stream. Если callback был указан, он станет обработчиом события `finish`.
@@ -785,7 +785,7 @@ Transform streams это [Duplex][] streams где выходящие данны
 с помощью underlying реализации [`_read(size)`][] метода.
 
 Как пользоваться streams - смотрите выше - [API для Пользователей Streams][].
-Здесь же, следует объяснение особенностей реализации собственныъ Readable streams
+Здесь же, следует объяснение особенностей реализации собственных Readable streams
 в ваших программах.
 
 #### Пример: A Counting Stream
@@ -949,11 +949,11 @@ SimpleProtocol.prototype._read = function(n) {
   * `objectMode` {Boolean} Будет ли этот stream вести себя
     как stream состоящий из объектов (как поток объектов - прим. переводчика).
     Означает, что stream.read(n) будет возвращать простое значение
-    вместо буффера размером n. Default=false.
+    вместо буфера размером n. Default=false.
 
-В классах, что расширяют Readable class,
-всегда нужно вызывать его конструктор. Это необходимо
-для провильной инициализации настроек буфферизации.
+Всегда вызывайте конструктор Readable класса в своём,
+когда наслдуете его. Это позволит сохраить настройки
+буферизации в порядке.
 
 #### readable.\_read(size)
 
@@ -962,7 +962,7 @@ SimpleProtocol.prototype._read = function(n) {
 Внимание: **Реализуйте эту функцию, но никогда не вызывайте её на прямую.**
 
 Эта функция предназначена для вызова внутренними Readable class методами,
-её следует реализовать в вашем классе и никогда не вызывать её напрямую.
+её следует реализовать в вашем классе и никогда не вызывать напрямую.
 
 Любая реализации Readable stream должны обеспечивать `_read` для
 получения данных из underlying ресурса.
@@ -972,8 +972,8 @@ SimpleProtocol.prototype._read = function(n) {
 перегрузите** его (override) в своём классе, а пользователь
 (вашим классом) никогда не будет вызывать его напрямую.
 
-(Если не перегрузить - в момент инициализации stream
- stream пошлёт событие `error`, см. iojs/lib/_stream_readable.js
+(Если не перегрузить - в момент инициализации вашего stream
+ он пошлёт событие `error`, см. iojs/lib/_stream_readable.js
  - примеч. переводчика).
 
 Когда данные доступны, положите их в очередь вызовом
@@ -992,34 +992,35 @@ SimpleProtocol.prototype._read = function(n) {
 
 #### readable.push(chunk[, encoding])
 
-* `chunk` {Buffer | null | String} Chunk of data to push into the read queue
-* `encoding` {String} Encoding of String chunks.  Must be a valid
-  Buffer encoding, such as `'utf8'` or `'ascii'`
-* return {Boolean} Whether or not more pushes should be performed
+* `chunk` {Buffer | null | String} Кусок данных (chunk) для передачи в очередь чтения.
+* `encoding` {String} Кодировка String кусков, должно быть валидно.
+  Кодировка Buffer-а как`'utf8'` или `'ascii'`.
+* return {Boolean} Должно быть или нет вызвано больше push.
 
 Note: **This function should be called by Readable implementors, NOT
 by consumers of Readable streams.**
 
-The `_read()` function will not be called again until at least one
-`push(chunk)` call is made.
+Функция `_read()`  не будет вызвана до тех пор,
+до, как минимум одного вызова `push(chunk)`.
 
-The `Readable` class works by putting data into a read queue to be
-pulled out later by calling the `read()` method when the `'readable'`
-event fires.
+Класс `Readable` работает благодаря "проталкиванию" данных
+в очередь, которые можно получить через вызов `read()`,
+когда посылается событие `'readable'`.
 
-The `push()` method will explicitly insert some data into the read
-queue.  If it is called with `null` then it will signal the end of the
-data (EOF).
+Метод `push()` будет явно *проталкивать* данные в очередь для чтения.
+Если он вызыван `null` аргументом, это будет расцениваться
+как конец данных (EOF)..
 
-This API is designed to be as flexible as possible.  For example,
-you may be wrapping a lower-level source which has some sort of
-pause/resume mechanism, and a data callback.  In those cases, you
-could wrap the low-level source object by doing something like this:
+Это API достаточно, в некоторой мере, гибко.
+Например, вы можете *обернуть* низкоуровневый источник который
+имеет особый вид pause/resume механизма и обработчик данных
+(data callback). Этот случай, как раз требует что-то вроде:
 
 ```javascript
-// source is an object with readStop() and readStart() methods,
-// and an `ondata` member that gets called when it has data, and
-// an `onend` member that gets called when the data is over.
+// источник здесь объект с readStop() и readStart() методами,
+// и `ondata` событие, которое посылается, когда данные доступны
+// и `onend` событие, когда передача закончена.
+
 
 util.inherits(SourceWrapper, Readable);
 
@@ -1029,21 +1030,21 @@ function SourceWrapper(options) {
   this._source = getLowlevelSourceObject();
   var self = this;
 
-  // Every time there's data, we push it into the internal buffer.
+  // Здесь данные, мы отправим их во внутренний буфер.
   this._source.ondata = function(chunk) {
-    // if push() returns false, then we need to stop reading from source
+    // если метод push() вернет false, мы должны остановить чтение из источника
     if (!self.push(chunk))
       self._source.readStop();
   };
 
-  // When the source ends, we push the EOF-signaling `null` chunk
+  // Когда источник закончит, мы просигналим EOF с  `null` chunk-ом
   this._source.onend = function() {
     self.push(null);
   };
 }
 
-// _read will be called when the stream wants to pull more data in
-// the advisory size argument is ignored in this case.
+// Метод _read будет вызван, когда stream станет готов получить больше данных
+// опциональный аргумент size в этом случае игнорируется.
 SourceWrapper.prototype._read = function(size) {
   this._source.readStart();
 };
@@ -1054,75 +1055,80 @@ SourceWrapper.prototype._read = function(size) {
 
 <!--type=class-->
 
-`stream.Writable` is an abstract class designed to be extended with an
-underlying implementation of the [`_write(chunk, encoding, callback)`][] method.
+`stream.Writable` это абстрактный интерфейс, разработанный для расширения
+с помощью underlying реализации [`_write(chunk, encoding, callback)`][].
 
-Please see above under [API для Пользователей Streams][] for how to consume
-writable streams in your programs.  What follows is an explanation of
-how to implement Writable streams in your programs.
+Как пользоваться streams - смотрите выше [API для Пользователей Streams][].
+Здесь же, следует объяснение особенностей реализации собственных Writable streams
+в ваших программах.
 
 #### new stream.Writable([options])
 
 * `options` {Object}
-  * `highWaterMark` {Number} Buffer level when [`write()`][] starts
-    returning false. Default=16kb, or 16 for `objectMode` streams
-  * `decodeStrings` {Boolean} Whether or not to decode strings into
-    Buffers before passing them to [`_write()`][].  Default=true
-  * `objectMode` {Boolean} Whether or not the `write(anyObj)` is
-    a valid operation. If set you can write arbitrary data instead
-    of only `Buffer` / `String` data.  Default=false
+  * `highWaterMark` {Number} Уровень буффера, когда вызван  [`write()`][],
+    возвращающий false. Default=16kb, или 16 для  `objectMode` streams.
+  * `decodeStrings` {Boolean} Будут ли strings декодированы в буферы,
+    перед их пересылкой в [`_write()`][]. Default=true
+  * `objectMode` {Boolean} Будет или нет операция `write(anyObj)`
+    валидна. Если установлен true - можно будет записывать данные
+    любого вида, вместо ограничения только в виде `Buffer` / `String`.
+    Default=true.
 
-In classes that extend the Writable class, make sure to call the
-constructor so that the buffering settings can be properly
-initialized.
+Всегда вызывайте конструктор Writable класса в своём,
+когда наследуете его. Это позволит сохраить настройки
+буферизации в порядке.
 
 #### writable.\_write(chunk, encoding, callback)
 
-* `chunk` {Buffer | String} The chunk to be written. Will **always**
-  be a buffer unless the `decodeStrings` option was set to `false`.
-* `encoding` {String} If the chunk is a string, then this is the
-  encoding type. If chunk is a buffer, then this is the special
-  value - 'buffer', ignore it in this case.
-* `callback` {Function} Call this function (optionally with an error
-  argument) when you are done processing the supplied chunk.
+* `chunk` {Buffer | String} Chunk данных для записи.
+  Всегда будет буффером, пока `decodeStrings` не установлен в `false`.
+* `encoding` {String} Если chunk это string, тогда опция
+  указывает на тип кодировки. Если buffer, тогда
+  тогда, по умолчанию - 'buffer'. В этом случае можно игнорировать.
+* `callback` {Function} Вызывайте эту функцию (в случае ошибки -
+  с аргументом error), когда закончите обработку кусков данных
 
-All Writable stream implementations must provide a [`_write()`][]
-method to send data to the underlying resource.
+Все реализации Writable stream должны иметь [`_write()`][] метод,
+для отсылки данных в underlying ресурс.
 
-Note: **This function MUST NOT be called directly.**  It should be
-implemented by child classes, and called by the internal Writable
-class methods only.
+Внимание: **Реализуйте эту функцию, но НИКОГДА НЕ вызывайте её на прямую.**
 
-Call the callback using the standard `callback(error)` pattern to
-signal that the write completed successfully or with an error.
+Эта функция предназначена для вызова внутренними Readable class методами,
+её следует реализовать в вашем классе и никогда не вызывать напрямую.
 
-If the `decodeStrings` flag is set in the constructor options, then
-`chunk` may be a string rather than a Buffer, and `encoding` will
-indicate the sort of string that it is.  This is to support
-implementations that have an optimized handling for certain string
-data encodings.  If you do not explicitly set the `decodeStrings`
-option to `false`, then you can safely ignore the `encoding` argument,
-and assume that `chunk` will always be a Buffer.
+Вызов `callback(error)` сигнализирует,
+что запись данных законена с ошибкой.
+Вызов без аругмента error - запись прошла успешно.
 
-This method is prefixed with an underscore because it is internal to
-the class that defines it, and should not be called directly by user
-programs.  However, you **are** expected to override this method in
-your own extension classes.
+Если `decodeStrings`  флаг установлен в конструкторе,
+`chunk`-и могут быть скорей string чем Buffer, и `encoding`
+будте указывать кодировку string. Это нужно для оптимизации
+обработки данных определенных string кодировок. Если вы
+явно не установите `decodeStrings` в `false`, тогдаДа
+можно безопасно проигнорировать `encoding` аргумент и
+получать записывать данные в виде Buffer.
+
+Этот метод имеет нижнее подчеркивание (underscore) т.к. он
+предназначен для внутренней системы и ожидается, что **вы
+перегрузите** его (override) в своём классе, а пользователь
+(вашим классом) никогда не будет вызывать его напрямую.
+
 
 ### writable.\_writev(chunks, callback)
 
-* `chunks` {Array} The chunks to be written.  Each chunk has following
-  format: `{ chunk: ..., encoding: ... }`.
-* `callback` {Function} Call this function (optionally with an error
-  argument) when you are done processing the supplied chunks.
+* `chunks` {Array} Куски данных для записи. Каждый имеет
+  формат `{ chunk: ..., encoding: ... }`.
+* `callback` {Function} Вызывайте эту функцию (в случае ошибки -
+  с аргументом error), когда закончите
+  обработку кусков данных.
 
-Note: **This function MUST NOT be called directly.**  It may be
-implemented by child classes, and called by the internal Writable
-class methods only.
+Этот метод, также как и `_write()` - **не должен быть вызван** напрямую
+и используется для внутренней системы Writable Stream.
 
-This function is completely optional to implement. In most cases it is
-unnecessary.  If implemented, it will be called with all the chunks
-that are buffered in the write queue.
+Данная функция, в большинстве случаев не требуется к реализации,
+потому остаётся опциональной. При её реализации, она будет вызвана
+вместе со *всеми* буферизированными кусками данных (chunks),
+что находятся очереди записи.
 
 
 ### Class: stream.Duplex
