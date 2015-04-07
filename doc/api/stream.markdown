@@ -430,11 +430,11 @@ setTimeout(function() {
 
 #### readable.unshift(chunk)
 
-* `chunk` {Buffer | String} Кусок данных для извлечения из очереди чтения.
+* `chunk` {Buffer | String} Кусок данных для извлечения из очереди чтения и сдвига его назад.
 
-Это полезно в определенных случаях, когда stream был
-использован парсером, которые нуждался временно *не использовать* выдачу
-данных из очередни, которые он (парсер) получал, так, что бы
+Это полезно в определенных случаях, когда stream используется
+парсером, который нуждался временно *не использовать*
+данные из очередни, которые он (парсер) получал, так, что бы
 stream мог передать их другой партией.
 
 Если вы очень часто вызываете этот метод,
@@ -478,10 +478,10 @@ function parseHeader(stream, callback) {
 
 #### readable.wrap(stream)
 
-* `stream` {Stream} В старом стиле readable streams.
+* `stream` {Stream} Старый вид readable stream.
 
 До версии  v0.10, API streams не были полноценно реализованы,
-(подробно, см. о обратной "Совместимости" ниже), потому,
+(подробно, о обратной "Совместимости"  см. ниже) поэтому,
 если вы использовали старую библиотеку io.js, которая
 посылает `'data'` события, и имеет рекомендальный метод [`pause()`][], тогда
 вы можете "обернуть" методом `wrap()` для создания [Readable][] stream, которые использует
@@ -672,10 +672,10 @@ reader.unpipe(writer);
 
 ### Class: stream.Duplex
 
-Duplex streams are streams that implement both the [Readable][] and
-[Writable][] interfaces.  See above for usage.
+Duplex streams это streams реализующий [Readable][] и
+[Writable][] интерфесы. Смотрите выше, для использования.
 
-Examples of Duplex streams include:
+Примеры Duplex streams:
 
 * [tcp sockets][]
 * [zlib streams][]
@@ -684,11 +684,12 @@ Examples of Duplex streams include:
 
 ### Class: stream.Transform
 
-Transform streams are [Duplex][] streams where the output is in some way
-computed from the input.  They implement both the [Readable][] and
-[Writable][] interfaces.  See above for usage.
+Transform streams это [Duplex][] streams где выходящие данных,
+предварительно, перед передачей, были обработаны особым образом.
+Этот тип stream реализует [Readable][] и [Writable][] интерфесы.
+Смотрите выше, для использования.
 
-Examples of Transform streams include:
+Примеры Transform streams:
 
 * [zlib streams][]
 * [crypto streams][]
@@ -698,34 +699,36 @@ Examples of Transform streams include:
 
 <!--type=misc-->
 
-To implement any sort of stream, the pattern is the same:
+Стандартный порядок реализации ваших
+собственных классов stream обычно таков:
 
-1. Extend the appropriate parent class in your own subclass.  (The
-   [`util.inherits`][] method is particularly helpful for this.)
-2. Call the appropriate parent class constructor in your constructor,
-   to be sure that the internal mechanisms are set up properly.
-2. Implement one or more specific methods, as detailed below.
+1. Расширьте подходящий класс stream в вашем классе.
+   (Обязательно используйте [`util.inherits`][])
+2. Вызовите конструктор наследуемого класса в вашем
+   конструкторе.
+3. Реализуйте один или несколько специальных методв, что описаны ниже.
 
-The class to extend and the method(s) to implement depend on the sort
-of stream class you are writing:
+Класс для расширения и методы необходимые для этого,
+зависят от вида класса, которые вы хотите реализовать:
 
 <table>
   <thead>
     <tr>
       <th>
-        <p>Use-case</p>
+        <p>Предмет использования</p>
+        <p>(с точки зрения пользователя вашим классом).</p>
       </th>
       <th>
-        <p>Class</p>
+        <p>Класс, от которого нужно наследовать интерфейс.</p>
       </th>
       <th>
-        <p>Method(s) to implement</p>
+        <p>Интерфейс для реализации.</p>
       </th>
     </tr>
   </thead>
   <tr>
     <td>
-      <p>Reading only</p>
+      <p>Только чтение данных.</p>
     </td>
     <td>
       <p>[Readable](#stream_class_stream_readable_1)</p>
@@ -736,7 +739,7 @@ of stream class you are writing:
   </tr>
   <tr>
     <td>
-      <p>Writing only</p>
+      <p>Только запись данных.</p>
     </td>
     <td>
       <p>[Writable](#stream_class_stream_writable_1)</p>
@@ -747,7 +750,7 @@ of stream class you are writing:
   </tr>
   <tr>
     <td>
-      <p>Reading and writing</p>
+      <p>Запись и чтение.</p>
     </td>
     <td>
       <p>[Duplex](#stream_class_stream_duplex_1)</p>
@@ -758,7 +761,7 @@ of stream class you are writing:
   </tr>
   <tr>
     <td>
-      <p>Operate on written data, then read the result</p>
+      <p>Оперирование над данным и запись (получение) их результатов.</p>
     </td>
     <td>
       <p>[Transform](#stream_class_stream_transform_1)</p>
@@ -769,43 +772,50 @@ of stream class you are writing:
   </tr>
 </table>
 
-In your implementation code, it is very important to never call the
-methods described in [API для Пользователей Streams][] above.  Otherwise, you
-can potentially cause adverse side effects in programs that consume
-your streaming interfaces.
+В вашей программе реализации, очень важно, что бы
+методы описанные в [API для Пользователей Streams][] (выше)
+не были никогда вызваны. В противном случае, это потенциально может привести
+к неприятным эффектам в программе, использующей ваш класс.
 
 ### Class: stream.Readable
 
 <!--type=class-->
 
-`stream.Readable` is an abstract class designed to be extended with an
-underlying implementation of the [`_read(size)`][] method.
+`stream.Readable` это абстрактный интерфейс, разработанный для расширения
+с помощью underlying реализации [`_read(size)`][] метода.
 
-Please see above under [API для Пользователей Streams][] for how to consume
-streams in your programs.  What follows is an explanation of how to
-implement Readable streams in your programs.
+Как пользоваться streams - смотрите выше - [API для Пользователей Streams][].
+Здесь же, следует объяснение особенностей реализации собственныъ Readable streams
+в ваших программах.
 
-#### Example: A Counting Stream
+#### Пример: A Counting Stream
 
 <!--type=example-->
 
-This is a basic example of a Readable stream.  It emits the numerals
-from 1 to 1,000,000 in ascending order, and then ends.
+Это базовый пример Readable stream.
+Он посылает цифры от 1 до 1 000 000
+и затем завершается работу.
 
 ```javascript
 var Readable = require('stream').Readable;
 var util = require('util');
+// Наследуем методы Readable stream
 util.inherits(Counter, Readable);
 
 function Counter(opt) {
+  // Наследуем свойства Readable stream
   Readable.call(this, opt);
   this._max = 1000000;
   this._index = 1;
 }
 
+// Реализуем специальный underlying метод
 Counter.prototype._read = function() {
   var i = this._index++;
   if (i > this._max)
+   // Вызов специального метода
+   // по окончании потока данных
+   // подробно о нём - ниже
     this.push(null);
   else {
     var str = '' + i;
@@ -815,23 +825,23 @@ Counter.prototype._read = function() {
 };
 ```
 
-#### Example: SimpleProtocol v1 (Sub-optimal)
+#### Пример: SimpleProtocol v1 (Sub-optimal)
 
-This is similar to the `parseHeader` function described above, but
-implemented as a custom stream.  Also, note that this implementation
-does not convert the incoming data to a string.
+Этот stream очень похож на `parseHeader` функцию (что выше), но
+реализован как кастомный stream. Примите также во внимание,
+что наш случай не конвертирует приходящие данные в string.
 
-However, this would be better implemented as a [Transform][] stream.  See
-below for a better implementation.
+Реализовать наш пример, лучше как [Transform][] stream.
+Смотрите ниже, более лучшую реализацию.
 
 ```javascript
-// A parser for a simple data protocol.
-// The "header" is a JSON object, followed by 2 \n characters, and
-// then a message body.
+// Парсер для простого протокола данных.
+// "Header" это JSON объект перед 2-мя \n символами
+/  далее - тело сообщения.
 //
-// NOTE: This can be done more simply as a Transform stream!
-// Using Readable directly for this is sub-optimal.  See the
-// alternative example below under the Transform section.
+// Внимание!: как было сказано ранее,
+// эта реализация менее оптимальна, чем в виде Transform stream!
+// Другой пример, находится в секции Transform stream.
 
 var Readable = require('stream').Readable;
 var util = require('util');
@@ -846,7 +856,7 @@ function SimpleProtocol(source, options) {
   this._inBody = false;
   this._sawFirstCr = false;
 
-  // source is a readable stream, such as a socket or file
+  // source здесь readable stream, как socket или file
   this._source = source;
 
   var self = this;
@@ -854,8 +864,8 @@ function SimpleProtocol(source, options) {
     self.push(null);
   });
 
-  // give it a kick whenever the source is readable
-  // read(0) will not consume any bytes
+  // дадим небольшой пинок, каждый раз, когда source станет readable
+  // read(0) просто получит данные нулевой длины
   source.on('readable', function() {
     self.read(0);
   });
@@ -868,11 +878,11 @@ SimpleProtocol.prototype._read = function(n) {
   if (!this._inBody) {
     var chunk = this._source.read();
 
-    // if the source doesn't have data, we don't have data yet.
+    // если у источника нет данных - у нас тоже
     if (chunk === null)
       return this.push('');
 
-    // check if the chunk has a \n\n
+    // проверим кусок (chunk) данных на наличие \n\n
     var split = -1;
     for (var i = 0; i < chunk.length; i++) {
       if (chunk[i] === 10) { // '\n'
@@ -888,8 +898,9 @@ SimpleProtocol.prototype._read = function(n) {
     }
 
     if (split === -1) {
-      // still waiting for the \n\n
-      // stash the chunk, and try again.
+      // всё еще ждем для \n\n
+      // спрячем chunk и попробуем снова
+      //
       this._rawHeader.push(chunk);
       this.push('');
     } else {
@@ -903,74 +914,81 @@ SimpleProtocol.prototype._read = function(n) {
         this.emit('error', new Error('invalid simple protocol data'));
         return;
       }
-      // now, because we got some extra data, unshift the rest
-      // back into the read queue so that our consumer will see it.
+      // теперь, т.к. мы получили дополнительные данные, вытащим остатки
+      // вернем их в очередь для чтения, что бы пользователь увидел их
       var b = chunk.slice(split);
       this.unshift(b);
 
-      // and let them know that we are done parsing the header.
+      // и дадим знать, что закончили парсинг header.
       this.emit('header', this.header);
     }
   } else {
-    // from there on, just provide the data to our consumer.
-    // careful not to push(null), since that would indicate EOF.
+    // начиная отсюда, просто отдадим данныхе нашему пользователю
+    // будьте осторожны с push(null), поскольку это будет означать EOF
     var chunk = this._source.read();
     if (chunk) this.push(chunk);
   }
 };
 
-// Usage:
+// Использование:
 // var parser = new SimpleProtocol(source);
-// Now parser is a readable stream that will emit 'header'
-// with the parsed header data.
+// Теперь парсер, это readable stream, который будет посылать событие 'header'
+// со спарсенными header-ами.
 ```
 
 
 #### new stream.Readable([options])
 
 * `options` {Object}
-  * `highWaterMark` {Number} The maximum number of bytes to store in
-    the internal buffer before ceasing to read from the underlying
-    resource.  Default=16kb, or 16 for `objectMode` streams
-  * `encoding` {String} If specified, then buffers will be decoded to
-    strings using the specified encoding.  Default=null
-  * `objectMode` {Boolean} Whether this stream should behave
-    as a stream of objects. Meaning that stream.read(n) returns
-    a single value instead of a Buffer of size n.  Default=false
+  * `highWaterMark` {Number}  Максиальное количества байтов
+    для хранения во внутреннем буфере перед прекращением их чтения
+    из underlying ресурса. Default=16kb, или 16 для  `objectMode` streams.
+  * `encoding` {String} Если указано, буфер будет декодировать
+    в strings используя эту кодировку. Default=null.
 
-In classes that extend the Readable class, make sure to call the
-Readable constructor so that the buffering settings can be properly
-initialized.
+  * `objectMode` {Boolean} Будет ли этот stream вести себя
+    как stream состоящий из объектов (как поток объектов - прим. переводчика).
+    Означает, что stream.read(n) будет возвращать простое значение
+    вместо буффера размером n. Default=false.
+
+В классах, что расширяют Readable class,
+всегда нужно вызывать его конструктор. Это необходимо
+для провильной инициализации настроек буфферизации.
 
 #### readable.\_read(size)
 
-* `size` {Number} Number of bytes to read asynchronously
+* `size` {Number} Количество байт для асинхронного считывания.
 
-Note: **Implement this function, but do NOT call it directly.**
+Внимание: **Реализуйте эту функцию, но никогда не вызывайте её на прямую.**
 
-This function should NOT be called directly.  It should be implemented
-by child classes, and only called by the internal Readable class
-methods.
+Эта функция предназначена для вызова внутренними Readable class методами,
+её следует реализовать в вашем классе и никогда не вызывать её напрямую.
 
-All Readable stream implementations must provide a `_read` method to
-fetch data from the underlying resource.
+Любая реализации Readable stream должны обеспечивать `_read` для
+получения данных из underlying ресурса.
 
-This method is prefixed with an underscore because it is internal to
-the class that defines it, and should not be called directly by user
-programs.  However, you **are** expected to override this method in
-your own extension classes.
+Этот метод имеет нижнее подчеркивание (underscore) т.к. он
+предназначен для внутренней системы и ожидается, что **вы
+перегрузите** его (override) в своём классе, а пользователь
+(вашим классом) никогда не будет вызывать его напрямую.
 
-When data is available, put it into the read queue by calling
-`readable.push(chunk)`.  If `push` returns false, then you should stop
-reading.  When `_read` is called again, you should start pushing more
-data.
+(Если не перегрузить - в момент инициализации stream
+ stream пошлёт событие `error`, см. iojs/lib/_stream_readable.js
+ - примеч. переводчика).
 
-The `size` argument is advisory.  Implementations where a "read" is a
-single call that returns data can use this to know how much data to
-fetch.  Implementations where that is not relevant, such as TCP or
-TLS, may ignore this argument, and simply provide data whenever it
-becomes available.  There is no need, for example to "wait" until
-`size` bytes are available before calling [`stream.push(chunk)`][].
+Когда данные доступны, положите их в очередь вызовом
+`readable.push(chunk)`. Если `push` вернет false, вы должны
+остановить чтение. Когда `_read` будет вызван снова,
+вы должны стартовать передачу данных методом `push`.
+
+Аргумент `size` здесь опцинален. Реализация, где
+"read" - простой вызов, который возвращает данные,
+может использовать `size`, что бы знать, как много отдавать данных.
+Реализация, где это не важно, например в TCP или TLS,
+возможно игнорировать этот аргумент и просто позволить
+данным быть доступными в любой момент.
+Также, нет необходимости, для примера, "ждать" до тех пор, пока
+`size` байты будут доступны перед вызовом [`stream.push(chunk)`][].
 
 #### readable.push(chunk[, encoding])
 
