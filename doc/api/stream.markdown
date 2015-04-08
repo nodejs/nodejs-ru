@@ -433,7 +433,7 @@ setTimeout(function() {
 * `chunk` {Buffer | String} Кусок данных для извлечения из очереди чтения и сдвига его назад.
 
 Это полезно в определенных случаях, когда stream используется
-парсером, который нуждался временно *не использовать*
+парсером, которому нужно было временно *не использовать*
 данные из очередни, которые он (парсер) получал, так, что бы
 stream мог передать их другой партией.
 
@@ -443,7 +443,7 @@ stream мог передать их другой партией.
 
 ```javascript
 // Вытащим header отделенный \n\n
-// используя unshift() если получим их слишком много
+// используя unshift(), если получим их слишком много
 // Вызовем callback с (error, header, stream)
 var StringDecoder = require('string_decoder').StringDecoder;
 function parseHeader(stream, callback) {
@@ -456,7 +456,7 @@ function parseHeader(stream, callback) {
     while (null !== (chunk = stream.read())) {
       var str = decoder.write(chunk);
       if (str.match(/\n\n/)) {
-        // Нашли границу header
+        // Нашли границу header-а
         var split = str.split(/\n\n/);
         header += split.shift();
         var remaining = split.join('\n\n');
@@ -468,7 +468,7 @@ function parseHeader(stream, callback) {
         // Теперь тело сообщения может быть прочитано из stream
         callback(null, header, stream);
       } else {
-        // Все ещё читаем header.
+        // Все ещё читаем header-ы.
         header += str;
       }
     }
@@ -509,7 +509,7 @@ myReader.on('readable', function() {
 <!--type=class-->
 
 Writable stream интерфейс это просто абстракция для вашего для
-вашего *получателя*, который *принимать* данные.
+вашего *получателя*, который будет *принимать* данные.
 
 Примеры writable streams включают:
 
@@ -525,7 +525,7 @@ Writable stream интерфейс это просто абстракция дл
 #### writable.write(chunk[, encoding][, callback])
 
 * `chunk` {String | Buffer} Данные для записи.
-* `encoding` {String} Кодировка, если `chunk` это String.
+* `encoding` {String}  Вид кодировки, если `chunk` это String.
 * `callback` {Function} Callback для вызова в момент сброса кусков (chunks) данных.
 * Returns: {Boolean} True - если данные полностью обработаны.
 
@@ -595,7 +595,7 @@ function writeOneMillionTimes(writer, data, encoding, callback) {
 #### writable.end([chunk][, encoding][, callback])
 
 * `chunk` {String | Buffer} Опцианально - данные для записи.
-* `encoding` {String} Кодировка, если `chunk` будет в виде string.
+* `encoding` {String}  Вид кодировки, если `chunk` будет в виде string.
 * `callback` {Function} Опциально - Автоматически вызывается по окончании работы stream.
 
 Вызывайте этот этот метод, по окончании передачи данных в этот
@@ -684,10 +684,10 @@ Duplex streams это streams реализующий [Readable][] и
 
 ### Class: stream.Transform
 
-Transform streams это [Duplex][] streams где выходящие данных,
-предварительно, перед передачей, были обработаны особым образом.
+Transform streams это [Duplex][] streams где выходящие данные,
+предварительно, перед выводом, были обработаны особым образом.
 Этот тип stream реализует [Readable][] и [Writable][] интерфесы.
-Смотрите выше, для использования.
+Для использования, смотрите выше.
 
 Примеры Transform streams:
 
@@ -914,8 +914,8 @@ SimpleProtocol.prototype._read = function(n) {
         this.emit('error', new Error('invalid simple protocol data'));
         return;
       }
-      // теперь, т.к. мы получили дополнительные данные, вытащим остатки
-      // вернем их в очередь для чтения, что бы пользователь увидел их
+      // теперь, когда мы получили дополнительные данные, вытащим их остатки
+      // и вернем в очередь для чтения, что бы пользователь увидел их
       var b = chunk.slice(split);
       this.unshift(b);
 
@@ -940,7 +940,7 @@ SimpleProtocol.prototype._read = function(n) {
 #### new stream.Readable([options])
 
 * `options` {Object}
-  * `highWaterMark` {Number}  Максиальное количества байтов
+  * `highWaterMark` {Number}  Максимальное количества байтов
     для хранения во внутреннем буфере перед прекращением их чтения
     из underlying ресурса. Default=16kb, или 16 для  `objectMode` streams.
   * `encoding` {String} Если указано, буфер будет декодировать
@@ -951,20 +951,19 @@ SimpleProtocol.prototype._read = function(n) {
     Означает, что stream.read(n) будет возвращать простое значение
     вместо буфера размером n. Default=false.
 
-Всегда вызывайте конструктор Readable класса в своём,
-когда наслдуете его. Это позволит сохраить настройки
+При наследовании этого класса, убедитесь, что вызвали его
+конструктор, это позволит сохранить настройки
 буферизации в порядке.
 
 #### readable.\_read(size)
 
 * `size` {Number} Количество байт для асинхронного считывания.
 
-Внимание: **Реализуйте эту функцию, но никогда не вызывайте её на прямую.**
-
+Внимание: **Реализуйте эту функцию, но НИКОГДА НЕ вызывайте её на прямую.**
 Эта функция предназначена для вызова внутренними Readable class методами,
 её следует реализовать в вашем классе и никогда не вызывать напрямую.
 
-Любая реализации Readable stream должны обеспечивать `_read` для
+Любая реализация Readable stream должны обеспечивать `_read` для
 получения данных из underlying ресурса.
 
 Этот метод имеет нижнее подчеркивание (underscore) т.к. он
@@ -992,20 +991,20 @@ SimpleProtocol.prototype._read = function(n) {
 
 #### readable.push(chunk[, encoding])
 
-* `chunk` {Buffer | null | String} Кусок данных (chunk) для передачи в очередь чтения.
+* `chunk` {Buffer | null | String} Кусок данных (chunk) для передачи в очередь для чтения.
 * `encoding` {String} Кодировка String кусков, должно быть валидно.
   Кодировка Buffer-а как`'utf8'` или `'ascii'`.
 * return {Boolean} Должно быть или нет вызвано больше push.
 
-Note: **This function should be called by Readable implementors, NOT
-by consumers of Readable streams.**
+Внимание!: **Эта функция предназначена для вызова теми,
+           кто реализует Readable class, но не его пользователем!**
 
 Функция `_read()`  не будет вызвана до тех пор,
 до, как минимум одного вызова `push(chunk)`.
 
-Класс `Readable` работает благодаря "проталкиванию" данных
-в очередь, которые можно получить через вызов `read()`,
-когда посылается событие `'readable'`.
+Класс `Readable` работает благодаря "складыванию" данных
+в очередь для чтения, откуда оные будут доступны по вызову `read()`,
+в момент, когда посылается событие `'readable'`.
 
 Метод `push()` будет явно *проталкивать* данные в очередь для чтения.
 Если он вызыван `null` аргументом, это будет расцениваться
@@ -1065,7 +1064,7 @@ SourceWrapper.prototype._read = function(size) {
 #### new stream.Writable([options])
 
 * `options` {Object}
-  * `highWaterMark` {Number} Уровень буффера, когда вызван  [`write()`][],
+  * `highWaterMark` {Number} Уровень буфера, когда вызван  [`write()`][],
     возвращающий false. Default=16kb, или 16 для  `objectMode` streams.
   * `decodeStrings` {Boolean} Будут ли strings декодированы в буферы,
     перед их пересылкой в [`_write()`][]. Default=true
@@ -1074,25 +1073,24 @@ SourceWrapper.prototype._read = function(size) {
     любого вида, вместо ограничения только в виде `Buffer` / `String`.
     Default=true.
 
-Всегда вызывайте конструктор Writable класса в своём,
-когда наследуете его. Это позволит сохраить настройки
+При наследовании этого класса, убедитесь, что вызвали его
+конструктор, это позволит сохранить настройки
 буферизации в порядке.
 
 #### writable.\_write(chunk, encoding, callback)
 
 * `chunk` {Buffer | String} Chunk данных для записи.
-  Всегда будет буффером, пока `decodeStrings` не установлен в `false`.
-* `encoding` {String} Если chunk это string, тогда опция
+  Всегда будет буфером, пока `decodeStrings` не установлен в `false`.
+* `encoding` {String}  Если chunk это string, тогда опция
   указывает на тип кодировки. Если buffer, тогда
-  тогда, по умолчанию - 'buffer'. В этом случае можно игнорировать.
+  тогда, по умолчанию, - 'buffer'. В этом случае можно игнорировать.
 * `callback` {Function} Вызывайте эту функцию (в случае ошибки -
-  с аргументом error), когда закончите обработку кусков данных
+  с аргументом error), когда закончите обработку кусков данных.
 
 Все реализации Writable stream должны иметь [`_write()`][] метод,
 для отсылки данных в underlying ресурс.
 
 Внимание: **Реализуйте эту функцию, но НИКОГДА НЕ вызывайте её на прямую.**
-
 Эта функция предназначена для вызова внутренними Readable class методами,
 её следует реализовать в вашем классе и никогда не вызывать напрямую.
 
@@ -1135,95 +1133,97 @@ SourceWrapper.prototype._read = function(size) {
 
 <!--type=class-->
 
-A "duplex" stream is one that is both Readable and Writable, such as a
-TCP socket connection.
+"Duplex" stream совмещает Readable и Writable интерфейсы (методы и свойства).
+Живой пример - TCP socket.
 
-Note that `stream.Duplex` is an abstract class designed to be extended
-with an underlying implementation of the `_read(size)` and
-[`_write(chunk, encoding, callback)`][] methods as you would with a
-Readable or Writable stream class.
+`Stream.Duplex` является абстрактным интерфейсом
+разработанным для его расширения посредством реализации `_read(size)`
+и [`_write(chunk, encoding, callback)`][] методов,
+как это было в случае с Readable и Writable streams.
 
-Since JavaScript doesn't have multiple prototypal inheritance, this
-class prototypally inherits from Readable, and then parasitically from
-Writable.  It is thus up to the user to implement both the lowlevel
-`_read(n)` method as well as the lowlevel
-[`_write(chunk, encoding, callback)`][] method on extension duplex classes.
+Поскольку JavaScript не имеет полноценного мульти-прототипного
+наследования, этот класс просто наследуется от Readable, а затем,
+"паразитически" от Writable. Такимо образом требуея от пользователя
+реализовать оба lowlevel  метода:
+`_read(n)` и [`_write(chunk, encoding, callback)`][].
 
 #### new stream.Duplex(options)
 
-* `options` {Object} Passed to both Writable and Readable
-  constructors. Also has the following fields:
-  * `allowHalfOpen` {Boolean} Default=true.  If set to `false`, then
-    the stream will automatically end the readable side when the
-    writable side ends and vice versa.
-  * `readableObjectMode` {Boolean} Default=false. Sets `objectMode`
-    for readable side of the stream. Has no effect if `objectMode`
-    is `true`.
-  * `writableObjectMode` {Boolean} Default=false. Sets `objectMode`
-    for writable side of the stream. Has no effect if `objectMode`
-    is `true`.
+* `options` {Object} Будет передан в Writable и Readable
+  конструкторы. Также, имеет следующие поля:
+  * `allowHalfOpen` {Boolean} Default=true.  Если установить в `false`,
+    stream будет автоматически останавливать readable stream
+    когда остановится writable stream и наоборот.
+    (Что-то вроде синхронизации работы двух потоков - примеч. переводчика).
+  * `readableObjectMode` {Boolean} Default=false.
+     Устанавливает `objectMode` для readable стороны stream.
+     Не учитывается, если `objectMode` установлен в `true`.
+  * `writableObjectMode` {Boolean} Default=false.
+     Устанавливает `objectMode` для writable стороны stream.
+     Не учитывается, если `objectMode` установлен в `true`.
 
-In classes that extend the Duplex class, make sure to call the
-constructor so that the buffering settings can be properly
-initialized.
+При наследовании этого класса, убедитесь, что вызвали его
+конструктор, это позволит сохранить настройки
+буферизации в порядке.
 
 
 ### Class: stream.Transform
 
-A "transform" stream is a duplex stream where the output is causally
-connected in some way to the input, such as a [zlib][] stream or a
-[crypto][] stream.
+"Transform" stream этой такой duplex stream в котором
+вывод (output) данных связан,некоторым способом, с вводом (input),
+как к примеру в [zlib][] stream  или [crypto][] stream.
 
-There is no requirement that the output be the same size as the input,
-the same number of chunks, or arrive at the same time.  For example, a
-Hash stream will only ever have a single chunk of output which is
-provided when the input is ended.  A zlib stream will produce output
-that is either much smaller or much larger than its input.
+Выводу не требуется быть такого же "размера" как и у входящих данных,
+иметь равное количество данных (chunks) или приходить одновременно.
+Например, Hash stream будет всегда иметь на выводе только простой chunk,
+(который появляется в момент, когда его вход закончит работу), или к примеру,
+Zlib stream который будет производить вывод данных либо меньших
+либо больших по "размеру", чем его ввод.
 
-Rather than implement the [`_read()`][] and [`_write()`][] methods, Transform
-classes must implement the `_transform()` method, and may optionally
-also implement the `_flush()` method.  (See below.)
+Вместо реализации методов [`_read()`][] и [`_write()`][],
+в Transform классе, скорее нужно реализоавать метод
+`_transform()` и, возможно, опциональный `_flush()` (о нем - ниже).
 
 #### new stream.Transform([options])
 
-* `options` {Object} Passed to both Writable and Readable
-  constructors.
+* `options` {Object} Будет передан в Writable и Readable
+  конструкторы.
 
-In classes that extend the Transform class, make sure to call the
-constructor so that the buffering settings can be properly
-initialized.
+При наследовании этого класса, убедитесь, что вызвали его
+конструктор, это позволит сохранить настройки
+буферизации в порядке.
 
 #### transform.\_transform(chunk, encoding, callback)
 
-* `chunk` {Buffer | String} The chunk to be transformed. Will **always**
-  be a buffer unless the `decodeStrings` option was set to `false`.
-* `encoding` {String} If the chunk is a string, then this is the
-  encoding type. If chunk is a buffer, then this is the special
-  value - 'buffer', ignore it in this case.
-* `callback` {Function} Call this function (optionally with an error
-  argument and data) when you are done processing the supplied chunk.
+* `chunk` {Buffer | String} Кусок данных, для трансформации (обработки).
+  **Всегда** будет buffer-ом, до тех пор, пока параметр `decodeStrings`
+  не станет`false`.
+* `encoding` {String} Если chunk это string, тогда опция
+  указывает на тип кодировки. Если buffer, тогда
+  тогда, по умолчанию, - 'buffer'. В этом случае можно игнорировать.
+* `callback` {Function} Вызывайте эту функцию (в случае ошибки -
+  с аргументом error и данными), когда закончите обработку данных.
 
-Note: **This function MUST NOT be called directly.**  It should be
-implemented by child classes, and called by the internal Transform
-class methods only.
+Внимание: **Реализуйте эту функцию, но НИКОГДА НЕ вызывайте её на прямую.**
+Эта функция предназначена для вызова внутренними Readable class методами,
+её следует реализовать в вашем классе и никогда не вызывать напрямую.
 
-All Transform stream implementations must provide a `_transform`
-method to accept input and produce output.
+Каждая реализация Transform stream должна обеспечить
+`_transform` метод для принятия и обработки данных перед выводом.
 
-`_transform` should do whatever has to be done in this specific
-Transform class, to handle the bytes being written, and pass them off
-to the readable portion of the interface.  Do asynchronous I/O,
-process things, and so on.
+`_transform` должен делать специфичные для Transform класса вещи,
+записывать байты во writable интерфейс, обрабатывать их, и
+передавать в readable интерфейс, делать асинхронные I/O операции и т.п.
 
-Call `transform.push(outputChunk)` 0 or more times to generate output
-from this input chunk, depending on how much data you want to output
-as a result of this chunk.
+Вызовите 0 или более раз `transform.push(outputChunk)` метод для входящего chunk-а,
+что бы сгенерировать выходящий, в зависимости от того, сколько данных вы хотите передать
+на вывод как результат.
 
-Call the callback function only when the current chunk is completely
-consumed.  Note that there may or may not be output as a result of any
-particular input chunk. If you supply output as the second argument to the
-callback, it will be passed to push method, in other words the following are
-equivalent:
+Вызовите callback тогда, когда текущий chunk будет полностью обработан.
+Обратите внимание, что здесь (в callback) при необходимости, данные на вывод
+можно не указывать. Если вы передадите в callback вторым
+аргументом, он будет передан в .push метод, другими словами,
+сказанное эквивалентно:
 
 ```javascript
 transform.prototype._transform = function (data, encoding, callback) {
@@ -1236,55 +1236,56 @@ transform.prototype._transform = function (data, encoding, callback) {
 }
 ```
 
-This method is prefixed with an underscore because it is internal to
-the class that defines it, and should not be called directly by user
-programs.  However, you **are** expected to override this method in
-your own extension classes.
+Этот метод имеет нижнее подчеркивание (underscore) т.к. он
+предназначен для внутренней системы и ожидается, что **вы
+перегрузите** его (override) в своём классе, а пользователь
+(вашим классом) никогда не будет вызывать его напрямую.
 
 #### transform.\_flush(callback)
 
-* `callback` {Function} Call this function (optionally with an error
-  argument) when you are done flushing any remaining data.
+* `callback` {Function} Вызывайте эту функцию (в случае ошибки -
+  с аргументом error) когда закончите сброс оставшихся данных (flushing).
 
-Note: **This function MUST NOT be called directly.**  It MAY be implemented
-by child classes, and if so, will be called by the internal Transform
-class methods only.
+Внимание: **Реализуйте эту функцию, но НИКОГДА НЕ вызывайте её на прямую.**
+Эта функция предназначена для вызова внутренними Readable class методами,
+её следует реализовать в вашем классе и никогда не вызывать напрямую.
 
-In some cases, your transform operation may need to emit a bit more
-data at the end of the stream.  For example, a `Zlib` compression
-stream will store up some internal state so that it can optimally
-compress the output.  At the end, however, it needs to do the best it
-can with what is left, so that the data will be complete.
+В некоторых случаях, операции преобразования, в конце stream
+может потребоваться переслать чуть больше данных.
+К примеру `Zlib` хранит некоторое внутреннее состояние для
+более оптимального сжатия данных перед выводом.
+Однако в конце требуется сделать что-то с остатками данных,
+так чтобы вывод был завершен.
 
-In those cases, you can implement a `_flush` method, which will be
-called at the very end, after all the written data is consumed, but
-before emitting `end` to signal the end of the readable side.  Just
-like with `_transform`, call `transform.push(chunk)` zero or more
-times, as appropriate, and call `callback` when the flush operation is
-complete.
+В таких случаях, вы можете реализовать метод `_flush`, который будет
+вызван почти перед концом вывода данных, после того, как все данные
+будут использованны, но перед посланием события `end`,
+сигнализирущем о конце readable стороны. Также как в методе `_transform`,
+вызовите `transform.push(chunk)` необходимое количество раз, а
+затем, когда завершите сброс (flush) данных, вызовите callback.
 
-This method is prefixed with an underscore because it is internal to
-the class that defines it, and should not be called directly by user
-programs.  However, you **are** expected to override this method in
-your own extension classes.
+Этот метод имеет нижнее подчеркивание (underscore) т.к. он
+предназначен для внутренней системы и ожидается, что **вы
+перегрузите** его (override) в своём классе, а пользователь
+(вашим классом) никогда не будет вызывать его напрямую.
 
-#### Events: 'finish' and 'end'
+#### События: 'finish' and 'end'
 
-The [`finish`][] and [`end`][] events are from the parent Writable
-and Readable classes respectively. The `finish` event is fired after
-`.end()` is called and all chunks have been processed by `_transform`,
-`end` is fired after all data has been output which is after the callback
-in `_flush` has been called.
+События [`finish`][] и [`end`][] происходят от Writable
+и Readable классов-предков, соответственно.
+[`finish`][] - посылается после вызова `.end()` и после обработки всех chunks
+в методе  `_transform`, событие `end`, в свою очередь,
+после вывода всех данных и вызова callback в `_flush`-методе.
 
 #### Example: `SimpleProtocol` parser v2
 
-The example above of a simple protocol parser can be implemented
-simply by using the higher level [Transform][] stream class, similar to
-the `parseHeader` and `SimpleProtocol v1` examples above.
+Простой парсер протокола (пример выше), может быть легко
+реализован благодаря высокоуровневому [Transform][] stream классу
+с аналогичными `parseHeader` и `SimpleProtocol v1` примерами.
 
-In this example, rather than providing the input as an argument, it
-would be piped into the parser, which is a more idiomatic io.js stream
-approach.
+В этом примере ввод (input) будет представлен как транспортировка данных
+в парсер (вместо аналогии ввода как аргумента),
+которой по логике, более близок io.js stream подходу.
 
 ```javascript
 var util = require('util');
@@ -1304,7 +1305,7 @@ function SimpleProtocol(options) {
 
 SimpleProtocol.prototype._transform = function(chunk, encoding, done) {
   if (!this._inBody) {
-    // check if the chunk has a \n\n
+    // Проверим chunk на наличие  \n\n
     var split = -1;
     for (var i = 0; i < chunk.length; i++) {
       if (chunk[i] === 10) { // '\n'
@@ -1320,8 +1321,8 @@ SimpleProtocol.prototype._transform = function(chunk, encoding, done) {
     }
 
     if (split === -1) {
-      // still waiting for the \n\n
-      // stash the chunk, and try again.
+      // все еще ожидаем \n\n
+      // спрячем chunk и попробуем снова
       this._rawHeader.push(chunk);
     } else {
       this._inBody = true;
@@ -1334,44 +1335,47 @@ SimpleProtocol.prototype._transform = function(chunk, encoding, done) {
         this.emit('error', new Error('invalid simple protocol data'));
         return;
       }
-      // and let them know that we are done parsing the header.
+      // дадим знать, что мы закончили парсинг header-ов
+      //
       this.emit('header', this.header);
 
-      // now, because we got some extra data, emit this first.
+      // теперь, когда мы получиле немного дополнительных данных
+      // отправим их первыми
       this.push(chunk.slice(split));
     }
   } else {
-    // from there on, just provide the data to our consumer as-is.
+    // начиная отсюда, просто отдадим данные пользователю as-is.
     this.push(chunk);
   }
   done();
 };
 
-// Usage:
+// Использование:
 // var parser = new SimpleProtocol();
 // source.pipe(parser)
-// Now parser is a readable stream that will emit 'header'
-// with the parsed header data.
+// Теперь наше парсер это readable stream,
+// способный посылать 'header'-событие
+// вместе со спарсенными header-ами.
 ```
 
 
 ### Class: stream.PassThrough
 
-This is a trivial implementation of a [Transform][] stream that simply
-passes the input bytes across to the output.  Its purpose is mainly
-for examples and testing, but there are occasionally use cases where
-it can come in handy as a building block for novel sorts of streams.
+Это простая реализация [Transform][] stream, которая просто
+передаёт байты с входа на выход. Его назначение, главным образом,
+для примеров и тестирования, но иногда, н может быть
+использованя для создания новых видов stream.
 
 
-## Simplified Constructor API 
+## Упрощенный конструктор API
 
 <!--type=misc-->
 
-In simple cases there is now the added benefit of being able to construct a stream without inheritance.
+В простых случаях это приносит выгоду, от возможности построить stream без наследования.
 
-This can be done by passing the appropriate methods as constructor options:
+Это может быть выполнено путём передачи соответствующего метода как опцию конструктора:
 
-Examples:
+Примеры:
 
 ### Readable
 ```javascript
@@ -1434,47 +1438,46 @@ var transform = new stream.Transform({
 });
 ```
 
-## Streams: Under the Hood
+## Streams: Под капотом
 
 <!--type=misc-->
 
-### Buffering
+### Буферизация (Buffering)
 
 <!--type=misc-->
 
-Both Writable and Readable streams will buffer data on an internal
-object called `_writableState.buffer` or `_readableState.buffer`,
-respectively.
+Оба Writable и Readable streams будут записывать данные во внутренний
+объект, называемый `_writableState.buffer` или `_readableState.buffer`,
+соотвественно.
 
-The amount of data that will potentially be buffered depends on the
-`highWaterMark` option which is passed into the constructor.
+Количество данных для буферизации потенциально зависит
+от `highWaterMark` опции, которую можно передать в конструктор.
 
-Buffering in Readable streams happens when the implementation calls
-[`stream.push(chunk)`][].  If the consumer of the Stream does not call
-`stream.read()`, then the data will sit in the internal queue until it
-is consumed.
+Буферизация Readable streams происходит, когда реализация вызывает
+[`stream.push(chunk)`][]. Если пользователь Stream не вызывает `stream.read()`,
+тогда данные будут оставаться во внутренней очереди для чтения.
 
-Buffering in Writable streams happens when the user calls
-[`stream.write(chunk)`][] repeatedly, even when `write()` returns `false`.
+Буферизация Writable streams происходит, когда пользователь повторно вызывает
+[`stream.write(chunk)`][], даже когда `write()` возвращает `false`.
 
-The purpose of streams, especially with the `pipe()` method, is to
-limit the buffering of data to acceptable levels, so that sources and
-destinations of varying speed will not overwhelm the available memory.
+Получатель, указанный в  `pipe()` методе, ограничивает объём
+принимаемых в буфер данных, так, что stream-источник и получатель
+не будут выходить за рамки доступной памяти.
 
 ### `stream.read(0)`
 
-There are some cases where you want to trigger a refresh of the
-underlying readable stream mechanisms, without actually consuming any
-data.  In that case, you can call `stream.read(0)`, which will always
-return null.
+Есть случаи, когда в readable stream вам нужно обновить underlying
+механизм, фактически без использования каких-либо данных.
+Для этого, вы можете вызвать `stream.read(0)`, который всегда
+возвращает null.
 
-If the internal read buffer is below the `highWaterMark`, and the
-stream is not currently reading, then calling `read(0)` will trigger
-a low-level `_read` call.
+Если внутренний буфер находится ниже `highWaterMark`, и
+stream не находится в процессе чтения, вызов `read(0)`
+будет производить в низко-уровневый вызов `_read`.
 
-There is almost never a need to do this.  However, you will see some
-cases in io.js's internals where this is done, particularly in the
-Readable stream class internals.
+Тут прктически для этого ничего не нужно делать. Однако, вы
+удвите io.js в некоторых случаях, как это используетя,
+в особенности во внутринностях Readable stream.
 
 ### `stream.push('')`
 
