@@ -197,7 +197,7 @@ readable.on('data', function(chunk) {
 #### Событие: 'end'
 
 Обработчик этого события вызывается, когда
-данные больше не могут быть считаны.
+данные закончились и больше не могут быть считаны.
 
 Имейте ввиду, что это событие, не будет послано
 до тех пор, пока данные не будут полностью получены
@@ -1007,6 +1007,9 @@ SimpleProtocol.prototype._read = function(n) {
 в момент, когда посылается событие `'readable'`.
 
 Метод `push()` будет явно *проталкивать* данные в очередь для чтения.
+(просто отдаст данные пользователю в обработчик на `data` событие
+или через .read() метод. - примеч. переводчика).
+
 Если он вызыван `null` аргументом, это будет расцениваться
 как конец данных (EOF)..
 
@@ -1477,129 +1480,125 @@ stream не находится в процессе чтения, вызов `rea
 
 Тут прктически для этого ничего не нужно делать. Однако, вы
 удвите io.js в некоторых случаях, как это используетя,
-в особенности во внутринностях Readable stream.
+в особенности во внутренностях Readable stream.
 
 ### `stream.push('')`
 
-Pushing a zero-byte string or Buffer (when not in [Object mode][]) has an
-interesting side effect.  Because it *is* a call to
-[`stream.push()`][], it will end the `reading` process.  However, it
-does *not* add any data to the readable buffer, so there's nothing for
-a user to consume.
+Передача zero-byte string или Buffer (когда stream не в [Object mode][])
+имеет интересный эффект.
+Т.к. это вызов к [`stream.push()`][], это будет останавливать `reading`
+процесс. Однако, это **не добавляет** каких-либо данных в readable буффер,
+так что пользователю тут нечего будет прочесть.
 
-Very rarely, there are cases where you have no data to provide now,
-but the consumer of your stream (or, perhaps, another bit of your own
-code) will know when to check again, by calling `stream.read(0)`.  In
-those cases, you *may* call `stream.push('')`.
+Очень редок случай, когда у вас нет данных для передачи,
+но пользователь вашим stream (или, возможно, другой ваш собственный
+код) будет знать, когда это можно снова проверить доступность, всего лишь
+вызвав `stream.read(0)`. В таких случаях вы **могли бы** вызвать `stream.push('')`.
 
-So far, the only use case for this functionality is in the
-[tls.CryptoStream][] class, which is deprecated in io.js v1.0.  If you
-find that you have to use `stream.push('')`, please consider another
-approach, because it almost certainly indicates that something is
-horribly wrong.
+До сих пор, случай использования этой функции был в [tls.CryptoStream][]
+классе, который был запрещен в io.js v1.0. Если вы поймали себя на том,
+что используете `stream.push('')` функцию, пожалуйста, рассмотрите другой подход т.к.
+можно почти уверенно говорит нам, что что-то здесь ужасно неправильно.
 
-### Compatibility with Older Node.js Versions
+### Совместимость со старыми версиями Node.js
 
 <!--type=misc-->
 
-In versions of Node.js prior to v0.10, the Readable stream interface was
-simpler, but also less powerful and less useful.
+В версиях Node.js предшествующих v0.10, Readable stream интерфейс
+был простой, но также менее мощный и удобный.
 
-* Rather than waiting for you to call the `read()` method, `'data'`
-  events would start emitting immediately.  If you needed to do some
-  I/O to decide how to handle data, then you had to store the chunks
-  in some kind of buffer so that they would not be lost.
-* The [`pause()`][] method was advisory, rather than guaranteed.  This
-  meant that you still had to be prepared to receive `'data'` events
-  even when the stream was in a paused state.
+*  Вместо ожидания вызова `read()`, `'data'` события посылались
+   многовенно. Если вы хотели сделать что-то с  I/O, что бы определиться
+   как обработать данные, вам нужно было сохранить их в
+   какой-то буфер.
+*  Метод [`pause()`][] не гарантировал приостановку потока данных. Это
+   означает, что вы всегда должны были готовы принимать `'data'`
+   события, даже когда stream был в приостановленном состоянии (paused state).
 
-In io.js v1.0 and Node.js v0.10, the Readable class described below was added.
-For backwards compatibility with older Node.js programs, Readable streams
-switch into "flowing mode" when a `'data'` event handler is added, or
-when the [`resume()`][] method is called.  The effect is that, even if
-you are not using the new `read()` method and `'readable'` event, you
-no longer have to worry about losing `'data'` chunks.
+В io.js v1.0 и Node.js v0.10, ниже, было добавлено описание the Readable класса.
+В целях обратной совместимости со старыми Node.js программами, Readable streams
+переключаются в "flowing mode" в момент добавления обработчика `'data'`события
+или в момент вызова [`resume()`][], что позволяет вам, даже если
+вы не использовали новый метод `read()` и событие `'data'`,
+вы больше можете не волноваться о потере `'data'` chunks.
 
-Most programs will continue to function normally.  However, this
-introduces an edge case in the following conditions:
+Большинство программ продолжат функционировать нормально,
+однако, это приводит к крайнему случаю в следующих условиях:
 
-* No [`'data'` event][] handler is added.
-* The [`resume()`][] method is never called.
-* The stream is not piped to any writable destination.
+* Не добавлен обработчик [`'data'`][] события.
+* Метод [`resume()`][] никогда не вызывался.
+* Stream не передавал (.pipe()) данные в какому-либо writable-полючателю.
 
-For example, consider the following code:
+К примеру, рассмотрим следующий код:
 
 ```javascript
-// WARNING!  BROKEN!
+// ВНИМАНИЕ!  СЛОМАНО!
 net.createServer(function(socket) {
 
-  // we add an 'end' method, but never consume the data
+  // мы добавляем 'end' обработчик, но никогда не пользуемся данными
   socket.on('end', function() {
-    // It will never get here.
-    socket.end('I got your message (but didnt read it)\n');
+    // Это мы никогда не получим
+    socket.end('Я получил ваше сообщение (но не прочитал его)\n');
   });
 
 }).listen(1337);
 ```
 
-In versions of Node.js prior to v0.10, the incoming message data would be
-simply discarded.  However, in io.js v1.0 and Node.js v0.10 and beyond,
-the socket will remain paused forever.
+В версиях Node.js предшествующих v0.10, данные incoming message (см. http.incomingMessage - примеч. переводчика)
+будут просто отбрасываться. Однако, в версихя io.js v1.0 и Node.js v0.10 и
+старше, socket будет оставаться приостановеленным (paused) всегда.
 
-The workaround in this situation is to call the `resume()` method to
-start the flow of data:
+Обойти эту ситуация можно вызвав `resume()` метод
+дабы возобновить поток данных:
 
 ```javascript
-// Workaround
+// Обход
 net.createServer(function(socket) {
 
   socket.on('end', function() {
-    socket.end('I got your message (but didnt read it)\n');
+    socket.end('Я получил ваше сообщение (но не прочитал его)\n');
   });
 
-  // start the flow of data, discarding it.
+  // возобновим поток данных, отбрасывая их.
   socket.resume();
 
 }).listen(1337);
 ```
 
-In addition to new Readable streams switching into flowing mode,
-pre-v0.10 style streams can be wrapped in a Readable class using the
-`wrap()` method.
-
+В дополнение в новому в Readable streams переключению в flowing mode,
+pre-v0.10 версии streams могут быть обернуты (wrapped) в Readable класс
+с использовнием `wrap()`метода.
 
 ### Object Mode
 
 <!--type=misc-->
 
-Normally, Streams operate on Strings and Buffers exclusively.
+Обычно, Streams оперируют только над Strings и Buffers.
 
-Streams that are in **object mode** can emit generic JavaScript values
-other than Buffers and Strings.
+Streams в **object mode** позваоляют посылать генерированные JavaScript значения
+отличные от Buffers and Strings.
 
-A Readable stream in object mode will always return a single item from
-a call to `stream.read(size)`, regardless of what the size argument
-is.
+Readable stream в **object mode**, после `stream.read(size)` вызова,
+всегда вернёт простой предмет, несмотря на на size аргумент.
 
-A Writable stream in object mode will always ignore the `encoding`
-argument to `stream.write(data, encoding)`.
+Writable stream в **object mode**, будет всегда игнорировать `encoding`
+аргумент в `stream.write(data, encoding)` вызове.
 
-The special value `null` still retains its special value for object
-mode streams.  That is, for object mode readable streams, `null` as a
-return value from `stream.read()` indicates that there is no more
-data, and [`stream.push(null)`][] will signal the end of stream data
-(`EOF`).
+Специально значение `null` для  **object mode** остаётся тем же.
+Что значит, что возвращаемое `null`-значение по прежнему указывает, что
+данных в readable stream больше нет и [`stream.push(null)`][]
+будет сообщать о конце stream данных (`EOF`).
 
-No streams in io.js core are object mode streams.  This pattern is only
-used by userland streaming libraries.
+Streams в io.js ядре в object mode отсутсвуют. Этот паттерн существует
+только пользовательсих streaming библиотек.
 
-You should set `objectMode` in your stream child class constructor on
-the options object.  Setting `objectMode` mid-stream is not safe.
+В опциях в вашем новом stream конструкторе, вы должны установить `objectMode`
+-параметр. Установка `objectMode` в mid-stream не безопасна.
 
-For Duplex streams `objectMode` can be set exclusively for readable or
-writable side with `readableObjectMode` and `writableObjectMode`
-respectively. These options can be used to implement parsers and
-serializers with Transform streams.
+Для Duplex streams `objectMode` может быть установлен только либо для
+readable либо для writable части с помощью `readableObjectMode` и
+`writableObjectMode`, соответственно. Эти опции могут быть использованы
+в реализациях парсеров или сериализаторов в Transform streams.
 
 ```javascript
 var util = require('util');
@@ -1607,7 +1606,7 @@ var StringDecoder = require('string_decoder').StringDecoder;
 var Transform = require('stream').Transform;
 util.inherits(JSONParseStream, Transform);
 
-// Gets \n-delimited JSON string data, and emits the parsed objects
+// Получает \n-разделенные JSON string данные, и отправляет распарсенные objects
 function JSONParseStream() {
   if (!(this instanceof JSONParseStream))
     return new JSONParseStream();
@@ -1620,9 +1619,9 @@ function JSONParseStream() {
 
 JSONParseStream.prototype._transform = function(chunk, encoding, cb) {
   this._buffer += this._decoder.write(chunk);
-  // split on newlines
+  // разделим по переходам строк
   var lines = this._buffer.split(/\r?\n/);
-  // keep the last partial line buffered
+  // сохраним оставшиеся строки в буфер
   this._buffer = lines.pop();
   for (var l = 0; l < lines.length; l++) {
     var line = lines[l];
@@ -1632,14 +1631,14 @@ JSONParseStream.prototype._transform = function(chunk, encoding, cb) {
       this.emit('error', er);
       return;
     }
-    // push the parsed object out to the readable consumer
+    // отдадим Readable польователю распарсенные objects
     this.push(obj);
   }
   cb();
 };
 
 JSONParseStream.prototype._flush = function(cb) {
-  // Just handle any leftover
+  // Просто обработаем остатки
   var rem = this._buffer.trim();
   if (rem) {
     try {
@@ -1648,7 +1647,7 @@ JSONParseStream.prototype._flush = function(cb) {
       this.emit('error', er);
       return;
     }
-    // push the parsed object out to the readable consumer
+    // отдадим Readable польователю распарсенные objects
     this.push(obj);
   }
   cb();
